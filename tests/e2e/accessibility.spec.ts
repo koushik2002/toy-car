@@ -4,7 +4,15 @@ test('keyboard and WCAG checks across storefront and admin', async ({ page }) =>
   await page.goto('./');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
-  for (const path of ['', 'shop', 'product/p001', 'account', 'admin', 'admin/tally']) {
+  for (const path of [
+    '',
+    'shop',
+    'product/p001',
+    'account',
+    'admin',
+    'admin/tally',
+    'admin/billing',
+  ]) {
     await page.goto(`./#/${path}`);
     await expect(page.locator('main h1').first()).toBeVisible();
     await page.waitForTimeout(500);

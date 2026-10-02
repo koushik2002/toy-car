@@ -277,8 +277,8 @@ export default function Shop() {
                 </button>
               )}
               <p className="result-caption">
-                Showing {Math.min(matches.length, limit)} of {matches.length} models · Prices
-                include GST
+                Showing {Math.min(matches.length, limit)} of {matches.length} models · Prices shown
+                in INR
               </p>
             </>
           ) : (

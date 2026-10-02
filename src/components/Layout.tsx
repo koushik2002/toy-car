@@ -23,7 +23,7 @@ import { Modal, Quantity, Empty, useUI } from './UI';
 export function Logo() {
   return (
     <Link to="/" aria-label="Tiny Kars home. Diecast. Done right." className="brand">
-      <img src={asset('assets/brand/logo.png')} alt="Tiny Kars" width="154" height="74" />
+      <img src={asset('assets/brand/logo.jpg')} alt="Tiny Kars" width="1024" height="1024" />
       <span>DIECAST. DONE RIGHT.</span>
     </Link>
   );
@@ -306,8 +306,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="container footer-bottom">
           <span>© {new Date().getFullYear()} Tiny Kars. Made for the collector in you.</span>
+          <span className="design-credit">
+            Designed by <strong>ShwaaS.ai</strong>
+          </span>
           <span>
-            INDIA · INR ₹ <span className="payment-marks">UPI &nbsp; VISA &nbsp; COD</span>
+            INDIA · INR ₹ <span className="payment-marks">WHATSAPP ORDERS</span>
           </span>
         </div>
       </footer>
@@ -372,7 +375,7 @@ export function CartDrawer() {
               <Link className="text-link" to="/cart" onClick={ui.closeCart}>
                 View full garage
               </Link>
-              <small className="muted">Prices include GST · simulated checkout</small>
+              <small className="muted">Order on WhatsApp · payment arranged with the shop</small>
             </div>
           </>
         )}
@@ -425,11 +428,21 @@ export function Totals() {
         <span>Shipping</span>
         <span>{t.shipping ? money(t.shipping) : 'FREE'}</span>
       </p>
+      {t.gst > 0 && (
+        <p>
+          <span>GST</span>
+          <span>{money(t.gst)}</span>
+        </p>
+      )}
       <p className="total">
         <strong>Total</strong>
         <strong>{money(t.total)}</strong>
       </p>
-      <small className="muted">Includes {money(t.gst)} GST on goods (demo 18%).</small>
+      {t.gst > 0 ? (
+        <small className="muted">GST: {money(t.gst)} · included in total.</small>
+      ) : (
+        <small className="muted">No GST charged.</small>
+      )}
     </div>
   );
 }

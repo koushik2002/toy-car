@@ -83,7 +83,7 @@ export default function Cart() {
               Head to checkout <ArrowRight size={18} />
             </Link>
             <p className="summary-trust">
-              <ShieldCheck size={15} /> Demo checkout · no real payment
+              <ShieldCheck size={15} /> WhatsApp checkout · arrange payment with the shop
             </p>
           </aside>
         </div>

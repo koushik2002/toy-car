@@ -30,7 +30,7 @@ describe('checkout and inventory transactions', () => {
   it('decrements stock, snapshots prices, empties cart and queues sales + stock jobs', () => {
     addToCart('p001', 3);
     const before = getState().products[0].stock,
-      id = placeOrder(address(), 'UPI'),
+      id = placeOrder(address(), 'WhatsApp'),
       s = getState(),
       o = s.orders.find((o) => o.id === id)!;
     expect(s.products[0].stock).toBe(before - 3);
@@ -46,7 +46,7 @@ describe('checkout and inventory transactions', () => {
     addToCart('p001', 3);
     adjustStock('p001', -6, 'Offline sale');
     const before = getState();
-    expect(() => placeOrder(address(), 'UPI')).toThrow('only');
+    expect(() => placeOrder(address(), 'WhatsApp')).toThrow('only');
     expect(getState()).toBe(before);
     expect(getState().cart[0].quantity).toBe(3);
   });
@@ -70,7 +70,7 @@ describe('checkout and inventory transactions', () => {
   });
   it('prevents cancellation after packing and requires tracking before shipping', () => {
     addToCart('p001');
-    const id = placeOrder(address(), 'UPI');
+    const id = placeOrder(address(), 'WhatsApp');
     advanceOrder(id);
     advanceOrder(id);
     expect(() => cancelOrder(id)).toThrow();
@@ -80,7 +80,7 @@ describe('checkout and inventory transactions', () => {
   });
   it('allows a delivered return within 7 days and restores returned stock once', () => {
     addToCart('p001');
-    const id = placeOrder(address(), 'UPI');
+    const id = placeOrder(address(), 'WhatsApp');
     advanceOrder(id);
     advanceOrder(id);
     advanceOrder(id, 'Demo Courier', 'DEMO123');

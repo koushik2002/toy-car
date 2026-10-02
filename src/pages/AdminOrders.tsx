@@ -56,7 +56,7 @@ export default function AdminOrders() {
           onChange={(e) => setPayment(e.target.value)}
         >
           <option value="">All payments</option>
-          {['UPI', 'Card', 'COD'].map((s) => (
+          {['WhatsApp', 'COD'].map((s) => (
             <option key={s}>{s}</option>
           ))}
         </select>
@@ -99,7 +99,7 @@ export default function AdminOrders() {
                         ? 'Paid (demo)'
                         : o.status === 'Refunded'
                           ? 'Refunded'
-                          : 'Not collected'}
+                          : 'Payment pending'}
                     </small>
                   </td>
                   <td>

@@ -9,6 +9,7 @@ import {
   RefreshCw,
   ArrowUpRight,
   CircleDot,
+  ReceiptText,
 } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 const items = [
@@ -16,6 +17,7 @@ const items = [
   ['products', 'Products', Package],
   ['inventory', 'Inventory', Boxes],
   ['orders', 'Orders', ShoppingBag],
+  ['billing', 'Bills & settings', ReceiptText],
   ['customers', 'Collectors', Users],
   ['offers', 'Offers & coupons', Tags],
   ['tally', 'Tally sync', RefreshCw],

@@ -1,23 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  ArrowRight,
-  LockKeyhole,
-  Check,
-  Smartphone,
-  CreditCard,
-  Wallet,
-  AlertCircle,
-} from 'lucide-react';
+import { ArrowRight, Check, MessageCircle } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { cartTotals } from '../services/cart';
 import { placeOrder, delivery } from '../services/orders';
 import { asset, money } from '../services/format';
 import { saveAddress } from '../services/account';
-import { useUI, Modal, Empty } from '../components/UI';
+import { getState } from '../services/storage';
+import { whatsappOrderLink, normalizeWhatsAppNumber } from '../services/whatsapp';
+import { useUI, Empty } from '../components/UI';
 import AddressFields, { blankAddress } from '../components/AddressForm';
 import { Totals } from '../components/Layout';
-import type { Order } from '../types';
 export default function Checkout() {
   const state = useStore(),
     ui = useUI(),
@@ -25,31 +18,11 @@ export default function Checkout() {
     user = state.users.find((u) => u.id === state.userId),
     t = cartTotals(state);
   const [address, setAddress] = useState(
-      user?.addresses[0] ?? { ...blankAddress, name: user?.name ?? '', phone: user?.phone ?? '' },
-    ),
-    [payment, setPayment] = useState<Order['payment']>('UPI'),
-    [payOpen, setPayOpen] = useState(false),
-    [failure, setFailure] = useState(false),
-    [saved, setSaved] = useState(false),
+    user?.addresses[0] ?? { ...blankAddress, name: user?.name ?? '', phone: user?.phone ?? '' },
+  );
+  const [saved, setSaved] = useState(false),
     [busy, setBusy] = useState(false),
     [pinResult, setPinResult] = useState('');
-  function complete() {
-    if (busy) return;
-    setBusy(true);
-    setTimeout(() => {
-      try {
-        const id = placeOrder(address, payment);
-        if (saved) ui.run(() => saveAddress(address));
-        setPayOpen(false);
-        nav(`/order/${id}?confirmed=1`);
-        ui.toast('Your order is placed. Welcome to the garage.');
-      } catch (e) {
-        ui.toast((e as Error).message, true);
-      } finally {
-        setBusy(false);
-      }
-    }, 450);
-  }
   if (!user)
     return (
       <div className="container page">
@@ -70,36 +43,46 @@ export default function Checkout() {
         </Empty>
       </div>
     );
+  function complete() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      normalizeWhatsAppNumber(state.commerce.whatsappNumber);
+      const id = placeOrder(address);
+      const order = getState().orders.find((o) => o.id === id)!;
+      const link = whatsappOrderLink(state.commerce.whatsappNumber, order);
+      if (saved) ui.run(() => saveAddress(address));
+      // Keep this synchronous with the click so mobile browsers allow the new tab.
+      window.open(link, '_blank', 'noopener,noreferrer');
+      nav(`/order/${id}?confirmed=1`);
+      ui.toast('Order saved. Tap Send in WhatsApp to request confirmation.');
+    } catch (e) {
+      ui.toast((e as Error).message, true);
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
     <div className="container page">
       <div className="checkout-steps">
         <Link to="/cart">01 Garage</Link>
         <ArrowRight size={15} />
-        <b>02 Checkout</b>
+        <b>02 Your details</b>
         <ArrowRight size={15} />
-        <span>03 Yours</span>
+        <span>03 WhatsApp</span>
       </div>
       <div className="page-heading">
         <span className="eyebrow red">ONE LAST PIT STOP</span>
         <h1>BRING THEM HOME.</h1>
-        <p>Securely packed. Collector approved. Ready for your shelf.</p>
+        <p>
+          Send your selection to Tiny Kars. Confirm availability and payment with us on WhatsApp.
+        </p>
       </div>
       <form
         className="cart-layout"
         onSubmit={(e) => {
           e.preventDefault();
-          if (
-            ui.run(() => {
-              const result = delivery(address.pin);
-              if (!result.available) throw Error(result.message);
-              if (payment === 'COD') complete();
-              else {
-                setFailure(false);
-                setPayOpen(true);
-              }
-            })
-          )
-            return;
+          complete();
         }}
       >
         <div className="checkout-main">
@@ -145,35 +128,22 @@ export default function Checkout() {
               Save this address to my account
             </label>
           </section>
-          <section className="panel">
+          <section className="panel whatsapp-panel">
             <h2>
-              <span>02</span> PAYMENT METHOD
+              <MessageCircle size={22} /> ORDER ON WHATSAPP
             </h2>
-            <div className="payment-options">
-              {(
-                [
-                  { id: 'UPI', icon: Smartphone, detail: 'Your favourite UPI app' },
-                  { id: 'Card', icon: CreditCard, detail: 'Debit or credit card' },
-                  { id: 'COD', icon: Wallet, detail: 'Pay on arrival' },
-                ] as const
-              ).map((p) => (
-                <label key={p.id} className={payment === p.id ? 'active' : ''}>
-                  <input
-                    type="radio"
-                    name="payment"
-                    value={p.id}
-                    checked={payment === p.id}
-                    onChange={() => setPayment(p.id)}
-                  />
-                  <p.icon size={22} />
-                  <b>{p.id}</b>
-                  <small>{p.detail}</small>
-                </label>
-              ))}
-            </div>
+            <p>
+              We’ll prepare a message with your models, quantities, total and delivery address.
+              Review it and tap Send in WhatsApp.
+            </p>
+            <p className="muted">
+              Tiny Kars will confirm your order and share payment instructions in the chat.
+            </p>
             <div className="notice">
-              <LockKeyhole size={17} />
-              <span>This is a demo. No bank details are requested and no money is charged.</span>
+              <MessageCircle size={18} />
+              <span>
+                No online payment is taken. Demo orders and stock are saved only in this browser.
+              </span>
             </div>
           </section>
         </div>
@@ -192,53 +162,13 @@ export default function Checkout() {
             </div>
           ))}
           <Totals />
-          <button className="btn btn-primary full" disabled={busy}>
-            {busy
-              ? 'Placing order…'
-              : payment === 'COD'
-                ? 'Place demo order'
-                : 'Continue to demo payment'}
-            <ArrowRight size={18} />
+          <button className="btn btn-whatsapp full" disabled={busy}>
+            {busy ? 'Preparing order…' : 'Order on WhatsApp'}
+            <MessageCircle size={18} />
           </button>
-          <p className="summary-trust">
-            <LockKeyhole size={15} /> Fully simulated checkout
-          </p>
+          <p className="summary-trust">Review and send your order in WhatsApp</p>
         </aside>
       </form>
-      {payOpen && (
-        <Modal
-          title="Demo payment"
-          onClose={() => {
-            if (!busy) setPayOpen(false);
-          }}
-        >
-          <div className="payment-demo">
-            <div className="payment-icon">
-              <LockKeyhole size={26} />
-            </div>
-            <span className="eyebrow red">TINY KARS · SIMULATED PAYMENT</span>
-            <h2>{money(t.total)}</h2>
-            <p>
-              {payment === 'UPI'
-                ? 'A real checkout would open your UPI app.'
-                : 'A real checkout would open a secure card gateway.'}
-            </p>
-            <p className="muted">Choose an outcome to demonstrate the payment journey.</p>
-            {failure && (
-              <div className="notice error" role="alert">
-                <AlertCircle size={18} />
-                Demo payment failed. Your cart and stock are unchanged. Try again.
-              </div>
-            )}
-            <button className="btn btn-primary full" disabled={busy} onClick={complete}>
-              {busy ? 'Processing…' : 'Simulate successful payment'} <Check size={18} />
-            </button>
-            <button className="btn full" disabled={busy} onClick={() => setFailure(true)}>
-              Simulate failed payment
-            </button>
-          </div>
-        </Modal>
-      )}
     </div>
   );
 }

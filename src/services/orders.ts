@@ -12,10 +12,10 @@ export function delivery(pin: string) {
     ? { available: false, message: 'This PIN code is outside the demo delivery area.' }
     : {
         available: true,
-        message: `Delivery in ${['56', '40', '50', '60', '11'].some((p) => pin.startsWith(p)) ? '2–4' : '4–7'} business days · COD available`,
+        message: `Delivery in ${['56', '40', '50', '60', '11'].some((p) => pin.startsWith(p)) ? '2–4' : '4–7'} business days · Confirm delivery on WhatsApp`,
       };
 }
-export function placeOrder(address: Address, payment: Order['payment']) {
+export function placeOrder(address: Address, payment: Order['payment'] = 'WhatsApp') {
   if (
     !address.name.trim() ||
     !address.line.trim() ||
@@ -51,11 +51,17 @@ export function placeOrder(address: Address, payment: Order['payment']) {
       shipping: t.shipping,
       total: t.total,
       gst: t.gst,
+      gstRate: d.commerce.gstEnabled ? d.commerce.gstRate : 0,
+      billing: {
+        sellerName: d.commerce.sellerName,
+        sellerAddress: d.commerce.sellerAddress,
+        gstin: d.commerce.gstEnabled ? d.commerce.gstin : '',
+      },
       status: 'Placed',
       at,
       address: { ...address },
       payment,
-      paid: payment !== 'COD',
+      paid: false,
       timeline: [{ status: 'Placed', at }],
     };
     t.lines.forEach((l) => {
@@ -145,7 +151,7 @@ export function refundOrder(id: string) {
 export function markCollected(id: string) {
   transact((d) => {
     const o = d.orders.find((o) => o.id === id);
-    if (o && o.payment === 'COD') o.paid = true;
+    if (o && !['Cancelled', 'Refunded'].includes(o.status)) o.paid = true;
   });
 }
 export function reorder(id: string) {

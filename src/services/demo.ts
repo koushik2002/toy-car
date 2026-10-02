@@ -19,13 +19,22 @@ export function simulateOrder() {
       subtotal: p.price,
       discount: 0,
       shipping,
-      total: p.price + shipping,
-      gst: Math.round(((p.price * 18) / 118) * 100) / 100,
+      total:
+        p.price +
+        shipping +
+        (d.commerce.gstEnabled ? Math.round(p.price * d.commerce.gstRate) / 100 : 0),
+      gst: d.commerce.gstEnabled ? Math.round(p.price * d.commerce.gstRate) / 100 : 0,
+      gstRate: d.commerce.gstEnabled ? d.commerce.gstRate : 0,
+      billing: {
+        sellerName: d.commerce.sellerName,
+        sellerAddress: d.commerce.sellerAddress,
+        gstin: d.commerce.gstEnabled ? d.commerce.gstin : '',
+      },
       status: 'Placed',
       at,
       address: { ...u.addresses[0] },
-      payment: 'UPI',
-      paid: true,
+      payment: 'WhatsApp',
+      paid: false,
       timeline: [{ status: 'Placed', at }],
     });
     queueSync(d, 'Sales Voucher', id);

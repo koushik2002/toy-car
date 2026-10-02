@@ -11,6 +11,14 @@ export const stages: OrderStatus[] = [
   'Out for delivery',
   'Delivered',
 ];
+export const defaultCommerce = {
+  whatsappNumber: '918861502026',
+  sellerName: 'Tiny Kars',
+  sellerAddress: '',
+  gstEnabled: false,
+  gstRate: 18,
+  gstin: '',
+};
 export function seed(): State {
   const now = Date.now();
   const seededOrders = orders.map(({ daysAgo, ...o }) => {
@@ -59,7 +67,9 @@ export function seed(): State {
     nextAt: now + (i % 7 === 0 ? 15000 : 2000),
   }));
   return {
-    version: 1,
+    version: 2,
+    commerce: { ...defaultCommerce },
+    bills: [],
     products: structuredClone(products) as State['products'],
     users: structuredClone(users) as State['users'],
     cart: [],

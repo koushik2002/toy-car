@@ -47,7 +47,7 @@ const tour = [
   ],
   [
     'Bring the models home',
-    'Complete the demo checkout, or use “Place tour order” with Arjun’s saved address.',
+    'Complete the demo checkout, or use “Place tour order” with Vishwas’s saved address.',
     '/checkout',
     '.checkout-main',
   ],
@@ -146,7 +146,7 @@ export default function Demo() {
         const s = getState();
         if (!s.cart.length) addToCart('p001', 3);
         const u = getState().users.find((u) => u.id === 'u1')!;
-        const id = placeOrder(u.addresses[0], 'UPI');
+        const id = placeOrder(u.addresses[0], 'WhatsApp');
         nav(`/order/${id}?confirmed=1`);
       }, 'Tour order placed.');
     if (step === 6)

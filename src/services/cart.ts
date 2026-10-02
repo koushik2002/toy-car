@@ -29,7 +29,10 @@ export function cartTotals(state: State, cart: CartItem[] = state.cart) {
     : 0;
   const discount = bundle + free + couponDiscount;
   const shipping = subtotal === 0 || subtotal - discount >= 1499 ? 0 : 79;
-  const total = subtotal - discount + shipping;
+  const gst = state.commerce.gstEnabled
+    ? Math.round((subtotal - discount) * state.commerce.gstRate) / 100
+    : 0;
+  const total = Math.round((subtotal - discount + shipping + gst) * 100) / 100;
   return {
     lines,
     subtotal,
@@ -39,7 +42,7 @@ export function cartTotals(state: State, cart: CartItem[] = state.cart) {
     discount,
     shipping,
     total,
-    gst: Math.round((((subtotal - discount) * 18) / 118) * 100) / 100,
+    gst,
     count: lines.reduce((n, l) => n + l.quantity, 0),
   };
 }

@@ -1,6 +1,20 @@
 import { useState } from 'react';
 import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Check, Printer, Truck, RotateCcw, Package, X } from 'lucide-react';
+import {
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  Printer,
+  Truck,
+  RotateCcw,
+  Package,
+  X,
+  MessageCircle,
+  Copy,
+} from 'lucide-react';
+import BillDocument from '../components/BillDocument';
+import { generateOrderBill } from '../services/billing';
+import { whatsappOrderLink, orderMessage } from '../services/whatsapp';
 import { useStore } from '../hooks/useStore';
 import { money, dateTime, asset } from '../services/format';
 import {
@@ -41,6 +55,7 @@ export default function OrderDetail() {
         </Empty>
       </div>
     );
+  const printBill = state.bills.find((bill) => bill.orderId === o.id);
   const confirmed = new URLSearchParams(location.search).has('confirmed'),
     terminal = ['Cancelled', 'Return requested', 'Refunded'].includes(o.status);
   return (
@@ -53,16 +68,16 @@ export default function OrderDetail() {
           <div>
             <Check size={32} />
           </div>
-          <span className="eyebrow red">IT'S OFFICIALLY YOURS</span>
+          <span className="eyebrow red">YOUR WHATSAPP ORDER REQUEST</span>
           <h1>
             GOOD TASTE.
             <br />
             GREAT COLLECTION.
           </h1>
           <p>
-            Your demo order is placed and stock has been updated.
+            Your order is saved in this demo. Tap Send in WhatsApp to share it with Tiny Kars.
             <br />
-            Your next shelf story is on its way.
+            The shop will confirm availability, delivery and payment in the chat.
           </p>
         </div>
       )}
@@ -157,10 +172,10 @@ export default function OrderDetail() {
               {o.address.phone}
             </p>
             <hr />
-            <h3>PAYMENT · {o.payment}</h3>
+            <h3>{o.payment === 'WhatsApp' ? 'PAYMENT ARRANGED ON WHATSAPP' : 'PAYMENT · COD'}</h3>
             <Badge
               status={
-                o.paid ? 'Paid (demo)' : o.status === 'Refunded' ? 'Refunded' : 'Not collected'
+                o.paid ? 'Paid (demo)' : o.status === 'Refunded' ? 'Refunded' : 'Payment pending'
               }
             />
             <div className="totals">
@@ -178,15 +193,65 @@ export default function OrderDetail() {
                 <span>Shipping</span>
                 <span>{o.shipping ? money(o.shipping) : 'FREE'}</span>
               </p>
+              {o.gst > 0 && (
+                <p>
+                  <span>GST ({o.gstRate ?? 0}%)</span>
+                  <span>{money(o.gst)}</span>
+                </p>
+              )}
               <p className="total">
                 <strong>Total</strong>
                 <strong>{money(o.total)}</strong>
               </p>
-              <small>Includes {money(o.gst)} GST on goods.</small>
+              <small>{o.gst > 0 ? 'GST included in the total.' : 'No GST charged.'}</small>
             </div>
-            <button className="btn full" onClick={() => window.print()}>
-              <Printer size={17} /> Print demo invoice
+            {!admin &&
+              o.payment === 'WhatsApp' &&
+              !['Cancelled', 'Refunded'].includes(o.status) && (
+                <>
+                  <a
+                    className="btn btn-whatsapp full"
+                    href={whatsappOrderLink(state.commerce.whatsappNumber, o)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <MessageCircle size={17} />
+                    Open order in WhatsApp
+                  </a>
+                  <button
+                    className="btn full"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(orderMessage(o));
+                        ui.toast('Order details copied.');
+                      } catch {
+                        ui.toast('Copy unavailable. Open the order in WhatsApp instead.', true);
+                      }
+                    }}
+                  >
+                    <Copy size={17} />
+                    Copy order details
+                  </button>
+                </>
+              )}
+            <button
+              className="btn full"
+              onClick={() =>
+                ui.run(() => {
+                  const bill = generateOrderBill(o);
+                  if (admin) nav(`/admin/billing?bill=${encodeURIComponent(bill.id)}`);
+                }, 'Bill generated and saved.')
+              }
+            >
+              <Printer size={17} />
+              Generate bill
             </button>
+            {!admin && printBill && (
+              <button className="btn full" onClick={() => window.print()}>
+                <Printer size={17} />
+                Print / Save PDF
+              </button>
+            )}
           </div>
           <div className="panel order-actions">
             {admin ? (
@@ -221,14 +286,14 @@ export default function OrderDetail() {
                     Advance to {stages[stages.indexOf(o.status) + 1]} <ArrowRight size={16} />
                   </button>
                 )}
-                {o.payment === 'COD' && !o.paid && o.status !== 'Refunded' && (
+                {!o.paid && !['Cancelled', 'Refunded'].includes(o.status) && (
                   <button
                     className="btn full"
                     onClick={() =>
-                      ui.run(() => markCollected(o.id), 'COD marked collected (demo).')
+                      ui.run(() => markCollected(o.id), 'Payment marked received (demo).')
                     }
                   >
-                    Mark COD collected
+                    Mark payment received
                   </button>
                 )}
                 {['Cancelled', 'Return requested'].includes(o.status) && (
@@ -273,48 +338,7 @@ export default function OrderDetail() {
           </div>
         </aside>
       </div>
-      <div className="invoice-only">
-        <h1>TINY KARS</h1>
-        <p>DEMO INVOICE · NOT A TAX INVOICE</p>
-        <p>
-          {o.id} · {dateTime(o.at)} IST
-        </p>
-        <p>
-          Bill to: {o.address.name}
-          <br />
-          {o.address.line}, {o.address.city} {o.address.pin}
-        </p>
-        <table>
-          <thead>
-            <tr>
-              <th>Model / SKU</th>
-              <th>Qty</th>
-              <th>Unit price (GST inclusive)</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {o.items.map((i) => (
-              <tr key={i.sku}>
-                <td>
-                  {i.name} · {i.sku}
-                </td>
-                <td>{i.quantity}</td>
-                <td>{money(i.price)}</td>
-                <td>{money(i.price * i.quantity)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p>
-          Discounts: {money(o.discount)} · Shipping: {money(o.shipping)}
-        </p>
-        <h2>Total: {money(o.total)}</h2>
-        <p>
-          GST included on goods: {money(o.gst)} (demo 18%) · Payment: {o.payment}
-        </p>
-        <p>No money was charged. This document is for demonstration only.</p>
-      </div>
+      {printBill && <BillDocument bill={printBill} className="invoice-only" />}
       {returnOpen && (
         <Modal title="Request a return" onClose={() => setReturnOpen(false)}>
           <form

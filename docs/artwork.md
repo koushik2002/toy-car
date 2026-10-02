@@ -1,6 +1,6 @@
 # Original artwork
 
-Generated with the **built-in imagegen tool**. WebP encoding, contact-sheet splitting and responsive sizing use Sharp. The chat-provided logo is a reference; `public/assets/brand/logo.png` is a replaceable **temporary wordmark**, not the original attachment.
+Generated with the **built-in imagegen tool**. WebP encoding, contact-sheet splitting and responsive sizing use Sharp. The original client-provided JPEG is now available as `public/assets/brand/logo.jpg` and used unchanged in the header, footer and bills. It replaces the temporary wordmark in the interface.
 
 ## Hero prompt
 

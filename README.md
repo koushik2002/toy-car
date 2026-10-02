@@ -22,27 +22,28 @@ Use **Demo** in the bottom-right corner to start a 12-step walkthrough, switch c
 
 ## Demo accounts
 
-The initial session is Arjun, so a presentation can begin immediately. Open Account and “Switch demo collector” to choose another user, or sign out to try phone + OTP.
+The initial session is Vishwas, so a presentation can begin immediately. Open Account and “Switch demo collector” to choose another user, or sign out to try phone + OTP.
 
-| Collector    | Phone      | City       |
-| ------------ | ---------- | ---------- |
-| Arjun Mehta  | 9876500001 | Bengaluru  |
-| Priya Sharma | 9876500002 | Mumbai     |
-| Karthik Rao  | 9876500003 | Hyderabad  |
-| Admin        | 9876500099 | Admin demo |
+| Collector | Phone      | City       |
+| --------- | ---------- | ---------- |
+| Vishwas   | 9876500001 | Bengaluru  |
+| Koushik   | 9876500002 | Mumbai     |
+| Jeevan    | 9876500003 | Hyderabad  |
+| Admin     | 9876500099 | Admin demo |
 
 Any valid Indian mobile number works with **Demo OTP `123456`**, displayed on screen. No SMS is sent. Switch to admin with the header's **Admin demo** button or the floating Demo panel. Direct admin links intentionally work; this is role simulation, not authentication.
 
-Coupons: `TINY10` (10%, ₹499 minimum), `FIRST15` (15%, ₹999 minimum), and initially disabled `COLLECT5` (5%). Prices use INR and Indian grouping; GST on goods is shown at a fixed **demo 18%**, not a production tax calculation. Shipping is ₹79, free above ₹1,499 **after discounts**.
+Coupons: `TINY10` (10%, ₹499 minimum), `FIRST15` (15%, ₹999 minimum), and initially disabled `COLLECT5` (5%). Prices use INR and Indian grouping; **GST is disabled by default**, so no tax is charged. Admin → Bills & settings includes a future GST toggle, GSTIN and configurable rate. When enabled, GST is added to discounted goods; shipping is unchanged. This is a demo calculation, not a complete statutory tax engine. Shipping is ₹79, free above ₹1,499 **after discounts**.
 
 ## What you can demonstrate
 
 - Home: cinematic hero, local artwork, brand/series mega-menu, scales, budgets, starter offer, new arrivals, best sellers, rare carousel and trust strips.
 - Catalogue: URL-based filters for brand, series, scale, price ceiling, condition, stock, rarity and offer; sorting, active chips, mobile drawer, simulated 350 ms skeleton state and header search suggestions.
 - Product: three presentations of illustrative artwork, zoom, quantity, stock states, wishlist, local restock reminder, related items and mocked six-digit PIN-code delivery.
-- Cart/checkout: drawer and page, add animation/toasts, automatic bundles, coupon, shipping progress, saved/new address, UPI/Card/COD and fake payment failure/success. Orders atomically validate/decrement stock, preserve item prices and queue sales/stock jobs.
-- Account: per-collector wishlist, profile, saved addresses, order filters, fulfilment timeline, tracking, printable **demo invoice**, reorder, cancel before packing, returns within seven days, optional local photo preview. Cancellation/refund restores stock once.
-- Admin: six KPIs, 30-day chart, brand item-sales chart, product CRUD/image preview, validated CSV import/export, stock adjustment reasons/thresholds/logs, fulfilment/tracking/COD/refund controls, customer histories/LTV, editable and creatable offers/coupons.
+- Cart/checkout: drawer and page, add animation/toasts, automatic bundles, coupon, shipping progress, saved/new address, WhatsApp ordering to **+91 8861502026**, with a prefilled item/quantity/price/address message. Customers review it and tap Send; payment is arranged in the chat. Opening WhatsApp does not prove that a message was sent. Orders atomically validate/decrement stock, preserve item prices and queue sales/stock jobs.
+- Account: per-collector wishlist, profile, saved addresses, order filters, fulfilment timeline, tracking, saved, printable **demo bill**, reorder, cancel before packing, returns within seven days, optional local photo preview. Cancellation/refund restores stock once.
+- Admin: six KPIs, 30-day chart, brand item-sales chart, product CRUD/image preview, validated CSV import/export, stock adjustment reasons/thresholds/logs, fulfilment/tracking/manual payment/refund controls, customer histories/LTV, editable and creatable offers/coupons.
+- Billing: custom or catalogue line items, collector or walk-in details, discount/shipping, saved bill history, print / Save PDF, order-based bills, seller details and future GST settings. Saved bills retain their original totals. Manual bills do not adjust inventory.
 - Tally: offline/online switch, company and last-sync time, configurable 15% default failure, pending/success/failed jobs, manual/all-failed retry, exponential backoff, stock pull, reconciliation accepting either source with an inventory log, editable SKU mappings. A late retry cannot replace a newer successful stock update.
 - Demo: guided customer → admin → Tally journey, event buttons, account switches, reset, and clickable feature map.
 
@@ -58,7 +59,7 @@ https://koushik2002.github.io/toy-car/#/product/p001
 https://koushik2002.github.io/toy-car/#/admin/tally
 ```
 
-These are the expected URLs **after deployment**, not proof that Pages has been enabled.
+The demo is deployed at the first URL; the other URLs open product and admin pages directly.
 
 `.github/workflows/deploy.yml` runs `npm ci`, service tests and the production build on each push to `main`, uploads `dist`, and deploys with the GitHub Pages environment. In the repository's **Settings → Pages**, choose **GitHub Actions** as the source. The authenticated repository owner must enable Pages if it has not been enabled. No deployment secrets or API keys are required.
 
@@ -72,7 +73,7 @@ GitHub account access is required for pushing and enabling Pages. Cloning a publ
 
 ## Logo, colours and artwork
 
-Replace **`public/assets/brand/logo.png`** with the exact supplied logo. The chat attachment was visible as a design reference but was not available as a local image file, so this file currently contains a temporary Tiny Kars wordmark. The SVG sibling is its source. The header/footer consume the same PNG path.
+The supplied original Tiny Kars logo is stored at **`public/assets/brand/logo.jpg`** and used in the header, footer and bills. It is copied unchanged from the client’s JPEG. The older placeholder assets are retained only as historical artwork and are not displayed.
 
 All brand tokens are in the `:root` blocks of **`src/styles.css`**; Tailwind tokens are in the adjacent `@theme` block. `--red-action` is slightly deeper than the accent red to meet contrast requirements for white button text.
 
@@ -107,6 +108,6 @@ The normal Playwright configuration uses installed Chrome on macOS if found and 
 
 ## Simulated vs production
 
-This prototype has no backend, database, payment gateway, real OTP, accounting bridge, analytics, real delivery lookup or real notification service. It does not collect card/bank credentials. Photo uploads are resized and saved in browser state, not sent anywhere. Browser data is local to each device, and reset restores the seed.
+This prototype has no backend, database, payment gateway, real OTP, accounting bridge, analytics, real delivery lookup or real notification service. It does not collect card/bank credentials. Photo uploads are resized and saved in browser state, not sent anywhere. Browser data is local to each device, and reset restores the seed (including saved bills and business settings). The WhatsApp link opens the real app/site; no messages are sent automatically. Existing version-1 browser data is migrated without clearing carts, stock, orders or wishlists, updating the three original collector names and removing the old demo GST/payment methods.
 
-Production would need server authentication/authorization, a transactional inventory/order database, validated addresses, a payment gateway with verified webhooks, delivery/carrier integration, actual tax/invoice configuration, secure upload storage, notifications, and a TallyPrime connector with durable jobs, accounting identifiers, idempotency and reconciliation. No real Tally XML or tax identifiers are invented here.
+Production would need server authentication/authorization, a transactional inventory/order database, validated addresses, a WhatsApp order confirmation workflow, delivery/carrier integration, actual tax/invoice configuration, secure upload storage, notifications, and a TallyPrime connector with durable jobs, accounting identifiers, idempotency and reconciliation. No real Tally XML or tax identifiers are invented here.

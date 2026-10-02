@@ -315,7 +315,7 @@ export default function Home() {
             <Truck size={17} /> Free shipping above ₹1,499
           </span>
           <span>
-            <ShieldCheck size={17} /> COD available
+            <ShieldCheck size={17} /> Order on WhatsApp
           </span>
           <span>
             <PackageCheck size={17} /> 7-day returns

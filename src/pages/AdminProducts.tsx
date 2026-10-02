@@ -237,7 +237,7 @@ export default function AdminProducts() {
                   </select>
                 </label>
                 <label>
-                  Price (₹, GST inclusive)
+                  Price (₹, before optional GST)
                   <input
                     type="number"
                     min="0"

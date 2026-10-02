@@ -6045,3 +6045,351 @@ input[role='switch']:checked:before {
     padding: 0 !important;
   }
 }
+
+/* Supplied Tiny Kars artwork, WhatsApp checkout, and billing desk. */
+.brand img {
+  width: 126px;
+  height: 86px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.brand > span {
+  display: none;
+}
+.site-footer .brand img {
+  width: 180px;
+  height: 180px;
+}
+.design-credit strong {
+  color: var(--yellow);
+}
+.btn-whatsapp {
+  background: #197444;
+  border-color: #197444;
+  color: #fff;
+}
+.btn-whatsapp:hover {
+  background: #135a34;
+  border-color: #135a34;
+}
+.whatsapp-panel > p {
+  margin: 16px 0;
+  line-height: 1.7;
+}
+.billing-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px;
+  background: linear-gradient(110deg, #171d29, #10151e);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+.billing-intro h2 {
+  font-size: 32px;
+  margin: 8px 0;
+}
+.billing-intro p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.billing-tax-state {
+  color: #b7e2c8;
+  background: #17362a;
+  padding: 10px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.billing-tax-state.enabled {
+  color: #ffe48b;
+  background: #383020;
+}
+.billing-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.billing-actions label {
+  flex: 1;
+  min-width: 220px;
+  margin: 0;
+}
+.billing-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 24px;
+  align-items: start;
+}
+.billing-form h2 {
+  margin: 4px 0 20px;
+}
+.billing-form h2:not(:first-child) {
+  margin-top: 30px;
+}
+.billing-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+.billing-lines {
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.billing-line {
+  min-width: 0;
+  background: #0c111a;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+}
+.billing-line-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.billing-summary {
+  position: sticky;
+  top: 24px;
+}
+.billing-summary > p {
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 18px;
+}
+.billing-settings {
+  margin-top: 24px;
+}
+.billing-settings summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 5px 0;
+}
+.billing-settings summary span {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+.billing-settings form {
+  margin-top: 22px;
+}
+.billing-settings form > p {
+  line-height: 1.7;
+  margin: 12px 0 20px;
+  font-size: 13px;
+}
+.bill-document {
+  background: #fff;
+  color: #18212d;
+  border-radius: 10px;
+  padding: 32px;
+  font-family: 'DM Sans', sans-serif;
+  margin: 24px 0;
+}
+.bill-screen-preview.invoice-only {
+  display: block;
+}
+.bill-heading {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #18212d;
+}
+.bill-heading img {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+}
+.bill-heading > div:last-child {
+  margin-left: auto;
+  text-align: right;
+}
+.bill-document h2 {
+  font-size: 28px;
+}
+.bill-document h3 {
+  font-size: 18px;
+  margin: 4px 0;
+}
+.bill-document p {
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.bill-document small {
+  display: block;
+  font-size: 10px;
+  color: #526072;
+}
+.bill-customer {
+  padding: 24px 0;
+}
+.bill-document th {
+  background: #f2f4f7;
+  color: #18212d;
+}
+.bill-document td {
+  color: #18212d;
+  border-color: #dbe0e6;
+}
+.bill-document tr:hover td {
+  background: #f8fafb;
+}
+.bill-document .table-wrap {
+  border: 1px solid #dbe0e6;
+  border-radius: 6px;
+}
+.bill-totals {
+  max-width: 310px;
+  margin: 22px 0 22px auto;
+}
+.bill-totals p {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 6px 0;
+}
+.bill-grand-total {
+  border-top: 2px solid #18212d;
+  margin-top: 12px;
+  font-size: 20px !important;
+}
+.bill-note {
+  border-top: 1px solid #dbe0e6;
+  padding-top: 18px;
+}
+.bill-document footer {
+  margin-top: 24px;
+  text-align: center;
+}
+@media (max-width: 1100px) {
+  .billing-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .billing-summary {
+    position: static;
+  }
+}
+@media (max-width: 650px) {
+  .header-main {
+    height: 140px;
+  }
+  .brand img {
+    width: 98px;
+    height: 72px;
+  }
+  .site-footer .brand img {
+    width: 150px;
+    height: 150px;
+  }
+  .billing-intro {
+    flex-direction: column;
+    padding: 20px;
+    gap: 14px;
+  }
+  .billing-intro h2 {
+    font-size: 27px;
+  }
+  .billing-field-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .billing-settings summary span {
+    margin-left: 0;
+  }
+  .bill-document {
+    padding: 18px;
+  }
+  .bill-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .bill-heading img {
+    width: 65px;
+    height: 65px;
+  }
+  .bill-heading > div:last-child {
+    margin-left: 0;
+    text-align: left;
+    width: 100%;
+  }
+  .bill-document .table-wrap {
+    overflow-x: auto;
+  }
+  .bill-document td,
+  .bill-document th {
+    padding: 10px 8px;
+    font-size: 11px;
+  }
+}
+@media print {
+  .admin-sidebar,
+  .admin-page-heading {
+    display: none !important;
+  }
+  .admin-layout,
+  .admin-content,
+  .billing-page {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .billing-page > :not(.invoice-only) {
+    display: none !important;
+  }
+  .bill-document.invoice-only {
+    display: block;
+    position: static !important;
+    border-radius: 0;
+    margin: 0;
+    padding: 0 !important;
+  }
+  .bill-document .bill-heading {
+    display: flex;
+    flex-wrap: nowrap;
+    break-inside: avoid;
+  }
+  .bill-document .bill-heading > div:last-child {
+    width: auto;
+    margin-left: auto;
+    text-align: right;
+  }
+  .bill-document .table-wrap {
+    overflow: visible !important;
+  }
+  .bill-document tr,
+  .bill-document .bill-totals,
+  .bill-document footer {
+    break-inside: avoid;
+  }
+  .bill-document thead {
+    display: table-header-group;
+  }
+}
+
+.billing-form input,
+.billing-form select,
+.billing-form textarea {
+  width: 100%;
+}
+.billing-field-grid > label {
+  min-width: 0;
+}

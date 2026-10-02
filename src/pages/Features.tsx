@@ -27,7 +27,7 @@ const groups = [
       ],
       [
         'Checkout',
-        'Indian addresses, UPI/Card/COD, fake success/failure, GST and atomic stock decrement.',
+        'Indian addresses, WhatsApp order messages, payment arranged with the shop and stock updates.',
         '/checkout',
       ],
     ],
@@ -61,6 +61,11 @@ const groups = [
   {
     title: 'BEHIND THE GARAGE DOORS',
     items: [
+      [
+        'Bill generator',
+        'Create and save bills, print or save as PDF, and configure optional future GST.',
+        '/admin/billing',
+      ],
       ['Admin dashboard', 'Six KPIs, 30-day order chart, brand sales and recent orders.', '/admin'],
       [
         'Product management',

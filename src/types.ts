@@ -76,7 +76,9 @@ export interface Order {
   at: string;
   deliveredAt?: string;
   address: Address;
-  payment: 'UPI' | 'Card' | 'COD';
+  payment: 'WhatsApp' | 'COD';
+  gstRate?: number;
+  billing?: Pick<CommerceSettings, 'sellerName' | 'sellerAddress' | 'gstin'>;
   paid: boolean;
   timeline: TimelineEvent[];
   tracking?: string;
@@ -121,8 +123,45 @@ export interface Offer {
   enabled: boolean;
   rule?: 'bundle' | 'b2g1';
 }
+export interface CommerceSettings {
+  whatsappNumber: string;
+  sellerName: string;
+  sellerAddress: string;
+  gstEnabled: boolean;
+  gstRate: number;
+  gstin: string;
+}
+export interface BillLine {
+  name: string;
+  sku: string;
+  quantity: number;
+  price: number;
+  hsn?: string;
+}
+export interface Bill {
+  id: string;
+  orderId?: string;
+  at: string;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  sellerName: string;
+  sellerAddress: string;
+  gstin: string;
+  gstEnabled: boolean;
+  gstRate: number;
+  items: BillLine[];
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  gst: number;
+  total: number;
+  note: string;
+}
 export interface State {
   version: number;
+  commerce: CommerceSettings;
+  bills: Bill[];
   products: Product[];
   users: User[];
   cart: CartItem[];
