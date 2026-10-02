@@ -6047,9 +6047,12 @@ input[role='switch']:checked:before {
 }
 
 /* Supplied Tiny Kars artwork, WhatsApp checkout, and billing desk. */
+.header-main {
+  height: 148px;
+}
 .brand img {
-  width: 126px;
-  height: 86px;
+  width: 160px;
+  height: 128px;
   object-fit: contain;
   border-radius: 8px;
 }
@@ -6057,8 +6060,8 @@ input[role='switch']:checked:before {
   display: none;
 }
 .site-footer .brand img {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
 }
 .design-credit strong {
   color: var(--yellow);
@@ -6290,15 +6293,15 @@ input[role='switch']:checked:before {
 }
 @media (max-width: 650px) {
   .header-main {
-    height: 140px;
+    height: 176px;
   }
   .brand img {
-    width: 98px;
-    height: 72px;
+    width: 128px;
+    height: 104px;
   }
   .site-footer .brand img {
-    width: 150px;
-    height: 150px;
+    width: 190px;
+    height: 190px;
   }
   .billing-intro {
     flex-direction: column;
