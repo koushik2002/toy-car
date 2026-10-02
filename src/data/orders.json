@@ -1,0 +1,877 @@
+[
+  {
+    "id": "TK-2609-1001",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p001",
+        "name": "Nissan Skyline GT-R (R34)",
+        "sku": "TK-0001",
+        "price": 249,
+        "quantity": 1,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 249,
+    "discount": 0,
+    "shipping": 79,
+    "total": 328,
+    "gst": 37.98,
+    "status": "Delivered",
+    "daysAgo": 0,
+    "payment": "UPI",
+    "paid": true,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100001",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1002",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p004",
+        "name": "Toyota Supra (A80)",
+        "sku": "TK-0004",
+        "price": 399,
+        "quantity": 2,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 798,
+    "discount": 0,
+    "shipping": 79,
+    "total": 877,
+    "gst": 121.73,
+    "status": "Shipped",
+    "daysAgo": 1,
+    "payment": "Card",
+    "paid": false,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100002",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1003",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p007",
+        "name": "Mazda RX-7",
+        "sku": "TK-0007",
+        "price": 1599,
+        "quantity": 1,
+        "image": "assets/products/car-6.webp"
+      }
+    ],
+    "subtotal": 1599,
+    "discount": 0,
+    "shipping": 0,
+    "total": 1599,
+    "gst": 243.92,
+    "status": "Confirmed",
+    "daysAgo": 2,
+    "payment": "COD",
+    "paid": false,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100003",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1004",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p010",
+        "name": "Datsun 510",
+        "sku": "TK-0010",
+        "price": 199,
+        "quantity": 2,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 398,
+    "discount": 0,
+    "shipping": 79,
+    "total": 477,
+    "gst": 60.71,
+    "status": "Packed",
+    "daysAgo": 3,
+    "payment": "UPI",
+    "paid": false,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100004",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1005",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p013",
+        "name": "BMW M3 E30",
+        "sku": "TK-0013",
+        "price": 399,
+        "quantity": 1,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 399,
+    "discount": 0,
+    "shipping": 79,
+    "total": 478,
+    "gst": 60.86,
+    "status": "Placed",
+    "daysAgo": 4,
+    "payment": "Card",
+    "paid": false,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100005",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1006",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p016",
+        "name": "Toyota AE86",
+        "sku": "TK-0016",
+        "price": 1599,
+        "quantity": 2,
+        "image": "assets/products/car-6.webp"
+      }
+    ],
+    "subtotal": 3198,
+    "discount": 0,
+    "shipping": 0,
+    "total": 3198,
+    "gst": 487.83,
+    "status": "Cancelled",
+    "daysAgo": 5,
+    "payment": "COD",
+    "paid": true,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100006",
+    "courier": "Demo Express",
+    "stockRestored": true
+  },
+  {
+    "id": "TK-2609-1007",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p019",
+        "name": "Nissan Silvia S15",
+        "sku": "TK-0019",
+        "price": 299,
+        "quantity": 1,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 299,
+    "discount": 0,
+    "shipping": 79,
+    "total": 378,
+    "gst": 45.61,
+    "status": "Return requested",
+    "daysAgo": 6,
+    "payment": "UPI",
+    "paid": true,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100007",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1008",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p022",
+        "name": "Porsche 911 GT3 RS",
+        "sku": "TK-0022",
+        "price": 499,
+        "quantity": 2,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 998,
+    "discount": 0,
+    "shipping": 79,
+    "total": 1077,
+    "gst": 152.24,
+    "status": "Refunded",
+    "daysAgo": 7,
+    "payment": "Card",
+    "paid": true,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100008",
+    "courier": "Demo Express",
+    "stockRestored": true
+  },
+  {
+    "id": "TK-2609-1009",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p025",
+        "name": "Lamborghini Hurac\u00e1n",
+        "sku": "TK-0025",
+        "price": 1699,
+        "quantity": 1,
+        "image": "assets/products/car-6.webp"
+      }
+    ],
+    "subtotal": 1699,
+    "discount": 0,
+    "shipping": 0,
+    "total": 1699,
+    "gst": 259.17,
+    "status": "Out for delivery",
+    "daysAgo": 8,
+    "payment": "COD",
+    "paid": true,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100009",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1010",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p028",
+        "name": "Ferrari F40",
+        "sku": "TK-0028",
+        "price": 299,
+        "quantity": 2,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 598,
+    "discount": 0,
+    "shipping": 79,
+    "total": 677,
+    "gst": 91.22,
+    "status": "Delivered",
+    "daysAgo": 9,
+    "payment": "UPI",
+    "paid": true,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100010",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1011",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p031",
+        "name": "McLaren 720S",
+        "sku": "TK-0031",
+        "price": 499,
+        "quantity": 1,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 499,
+    "discount": 0,
+    "shipping": 79,
+    "total": 578,
+    "gst": 76.12,
+    "status": "Shipped",
+    "daysAgo": 10,
+    "payment": "Card",
+    "paid": false,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100011",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1012",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p034",
+        "name": "Dodge Charger R/T",
+        "sku": "TK-0034",
+        "price": 12999,
+        "quantity": 2,
+        "image": "assets/products/car-6.webp"
+      }
+    ],
+    "subtotal": 25998,
+    "discount": 0,
+    "shipping": 0,
+    "total": 25998,
+    "gst": 3965.8,
+    "status": "Confirmed",
+    "daysAgo": 11,
+    "payment": "COD",
+    "paid": false,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100012",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1013",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p037",
+        "name": "Land Rover Defender",
+        "sku": "TK-0037",
+        "price": 399,
+        "quantity": 1,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 399,
+    "discount": 0,
+    "shipping": 79,
+    "total": 478,
+    "gst": 60.86,
+    "status": "Packed",
+    "daysAgo": 12,
+    "payment": "UPI",
+    "paid": false,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100013",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1014",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p040",
+        "name": "Volkswagen Golf GTI",
+        "sku": "TK-0040",
+        "price": 599,
+        "quantity": 2,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 1198,
+    "discount": 0,
+    "shipping": 79,
+    "total": 1277,
+    "gst": 182.75,
+    "status": "Placed",
+    "daysAgo": 13,
+    "payment": "Card",
+    "paid": false,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100014",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1015",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p043",
+        "name": "1969 Chevrolet Camaro",
+        "sku": "TK-0043",
+        "price": 1799,
+        "quantity": 1,
+        "image": "assets/products/car-6.webp"
+      }
+    ],
+    "subtotal": 1799,
+    "discount": 0,
+    "shipping": 0,
+    "total": 1799,
+    "gst": 274.42,
+    "status": "Cancelled",
+    "daysAgo": 14,
+    "payment": "COD",
+    "paid": true,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100015",
+    "courier": "Demo Express",
+    "stockRestored": true
+  },
+  {
+    "id": "TK-2609-1016",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p046",
+        "name": "Ford Mustang GT",
+        "sku": "TK-0046",
+        "price": 399,
+        "quantity": 2,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 798,
+    "discount": 0,
+    "shipping": 79,
+    "total": 877,
+    "gst": 121.73,
+    "status": "Return requested",
+    "daysAgo": 15,
+    "payment": "UPI",
+    "paid": true,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100016",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1017",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p049",
+        "name": "Honda Civic Type R",
+        "sku": "TK-0049",
+        "price": 599,
+        "quantity": 1,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 599,
+    "discount": 0,
+    "shipping": 79,
+    "total": 678,
+    "gst": 91.37,
+    "status": "Refunded",
+    "daysAgo": 16,
+    "payment": "Card",
+    "paid": true,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100017",
+    "courier": "Demo Express",
+    "stockRestored": true
+  },
+  {
+    "id": "TK-2609-1018",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p052",
+        "name": "Mercedes-Benz 190E",
+        "sku": "TK-0052",
+        "price": 29999,
+        "quantity": 2,
+        "image": "assets/products/car-6.webp"
+      }
+    ],
+    "subtotal": 59998,
+    "discount": 0,
+    "shipping": 0,
+    "total": 59998,
+    "gst": 9152.24,
+    "status": "Out for delivery",
+    "daysAgo": 17,
+    "payment": "COD",
+    "paid": true,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100018",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1019",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p055",
+        "name": "Audi RS6 Avant",
+        "sku": "TK-0055",
+        "price": 499,
+        "quantity": 1,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 499,
+    "discount": 0,
+    "shipping": 79,
+    "total": 578,
+    "gst": 76.12,
+    "status": "Delivered",
+    "daysAgo": 18,
+    "payment": "UPI",
+    "paid": true,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100019",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1020",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p058",
+        "name": "Pagani Huayra",
+        "sku": "TK-0058",
+        "price": 699,
+        "quantity": 2,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 1398,
+    "discount": 0,
+    "shipping": 79,
+    "total": 1477,
+    "gst": 213.25,
+    "status": "Shipped",
+    "daysAgo": 19,
+    "payment": "Card",
+    "paid": false,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100020",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1021",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p001",
+        "name": "Nissan Skyline GT-R (R34)",
+        "sku": "TK-0001",
+        "price": 249,
+        "quantity": 1,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 249,
+    "discount": 0,
+    "shipping": 79,
+    "total": 328,
+    "gst": 37.98,
+    "status": "Confirmed",
+    "daysAgo": 20,
+    "payment": "COD",
+    "paid": false,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100021",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1022",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p004",
+        "name": "Toyota Supra (A80)",
+        "sku": "TK-0004",
+        "price": 399,
+        "quantity": 2,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 798,
+    "discount": 0,
+    "shipping": 79,
+    "total": 877,
+    "gst": 121.73,
+    "status": "Packed",
+    "daysAgo": 21,
+    "payment": "UPI",
+    "paid": false,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100022",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1023",
+    "userId": "u2",
+    "items": [
+      {
+        "productId": "p007",
+        "name": "Mazda RX-7",
+        "sku": "TK-0007",
+        "price": 1599,
+        "quantity": 1,
+        "image": "assets/products/car-6.webp"
+      }
+    ],
+    "subtotal": 1599,
+    "discount": 0,
+    "shipping": 0,
+    "total": 1599,
+    "gst": 243.92,
+    "status": "Placed",
+    "daysAgo": 22,
+    "payment": "Card",
+    "paid": false,
+    "address": {
+      "id": "a2",
+      "name": "Priya Sharma",
+      "phone": "9876500002",
+      "line": "18, Marine Lines",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "400001"
+    },
+    "tracking": "DEMO100023",
+    "courier": "Demo Express",
+    "stockRestored": false
+  },
+  {
+    "id": "TK-2609-1024",
+    "userId": "u3",
+    "items": [
+      {
+        "productId": "p010",
+        "name": "Datsun 510",
+        "sku": "TK-0010",
+        "price": 199,
+        "quantity": 2,
+        "image": "assets/products/car-0.webp"
+      }
+    ],
+    "subtotal": 398,
+    "discount": 0,
+    "shipping": 79,
+    "total": 477,
+    "gst": 60.71,
+    "status": "Cancelled",
+    "daysAgo": 23,
+    "payment": "COD",
+    "paid": true,
+    "address": {
+      "id": "a3",
+      "name": "Karthik Rao",
+      "phone": "9876500003",
+      "line": "7, Abids Road",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "500001"
+    },
+    "tracking": "DEMO100024",
+    "courier": "Demo Express",
+    "stockRestored": true
+  },
+  {
+    "id": "TK-2609-1025",
+    "userId": "u1",
+    "items": [
+      {
+        "productId": "p013",
+        "name": "BMW M3 E30",
+        "sku": "TK-0013",
+        "price": 399,
+        "quantity": 1,
+        "image": "assets/products/car-3.webp"
+      }
+    ],
+    "subtotal": 399,
+    "discount": 0,
+    "shipping": 79,
+    "total": 478,
+    "gst": 60.86,
+    "status": "Return requested",
+    "daysAgo": 0,
+    "payment": "UPI",
+    "paid": true,
+    "address": {
+      "id": "a1",
+      "name": "Arjun Mehta",
+      "phone": "9876500001",
+      "line": "24, Church Street",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pin": "560001"
+    },
+    "tracking": "DEMO100025",
+    "courier": "Demo Express",
+    "stockRestored": false
+  }
+]

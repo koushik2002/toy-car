@@ -1,0 +1,64 @@
+[
+  {
+    "id": "u1",
+    "name": "Arjun Mehta",
+    "phone": "9876500001",
+    "email": "arjun.mehta@example.com",
+    "role": "customer",
+    "addresses": [
+      {
+        "id": "a1",
+        "name": "Arjun Mehta",
+        "phone": "9876500001",
+        "line": "24, Church Street",
+        "city": "Bengaluru",
+        "state": "Karnataka",
+        "pin": "560001"
+      }
+    ]
+  },
+  {
+    "id": "u2",
+    "name": "Priya Sharma",
+    "phone": "9876500002",
+    "email": "priya.sharma@example.com",
+    "role": "customer",
+    "addresses": [
+      {
+        "id": "a2",
+        "name": "Priya Sharma",
+        "phone": "9876500002",
+        "line": "18, Marine Lines",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pin": "400001"
+      }
+    ]
+  },
+  {
+    "id": "u3",
+    "name": "Karthik Rao",
+    "phone": "9876500003",
+    "email": "karthik.rao@example.com",
+    "role": "customer",
+    "addresses": [
+      {
+        "id": "a3",
+        "name": "Karthik Rao",
+        "phone": "9876500003",
+        "line": "7, Abids Road",
+        "city": "Hyderabad",
+        "state": "Telangana",
+        "pin": "500001"
+      }
+    ]
+  },
+  {
+    "id": "admin",
+    "name": "Tiny Kars Admin",
+    "phone": "9876500099",
+    "email": "admin@example.com",
+    "role": "admin",
+    "addresses": []
+  }
+]

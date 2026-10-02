@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0d12" />
+    <meta
+      name="description"
+      content="Tiny Kars — a world of diecast. Explore a premium Indian collector store demo, from your next grail to your first 1:64."
+    />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%assets/brand/favicon.svg" />
+    <link
+      rel="preload"
+      as="image"
+      href="%BASE_URL%assets/hero.webp"
+      imagesrcset="%BASE_URL%assets/hero-mobile.webp 1100w, %BASE_URL%assets/hero.webp 1600w"
+      imagesizes="(max-width: 640px) 145vw, 100vw"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-800-normal.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-800-italic.woff2"
+    />
+    <title>Tiny Kars · Small cars. Big obsession.</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

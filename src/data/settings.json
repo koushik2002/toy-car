@@ -1,0 +1,36 @@
+{
+  "coupons": [
+    {
+      "code": "TINY10",
+      "percent": 10,
+      "min": 499,
+      "enabled": true
+    },
+    {
+      "code": "FIRST15",
+      "percent": 15,
+      "min": 999,
+      "enabled": true
+    },
+    {
+      "code": "COLLECT5",
+      "percent": 5,
+      "min": 0,
+      "enabled": false
+    }
+  ],
+  "offers": [
+    {
+      "id": "bundle",
+      "name": "Any 3 for ₹550",
+      "description": "On marked Starter Garage models. Automatically applied in groups of three.",
+      "enabled": true
+    },
+    {
+      "id": "b2g1",
+      "name": "Buy 2, get 1 free",
+      "description": "On marked collector models. Lowest-priced item free in each group of three.",
+      "enabled": true
+    }
+  ]
+}

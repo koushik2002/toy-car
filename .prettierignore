@@ -1,0 +1,7 @@
+node_modules
+dist
+public/assets
+src/data/*.json
+package-lock.json
+reports
+test-results
