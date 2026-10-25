@@ -15,7 +15,8 @@ import {
 import { useStore } from '../hooks/useStore';
 import { transact, resetDemo, getState } from '../services/storage';
 import { addToCart } from '../services/cart';
-import { placeOrder, advanceOrder } from '../services/orders';
+import { placeOrder } from '../services/orders';
+import { generateOrderBill } from '../services/billing';
 import { simulateOrder, simulateLowStock, simulateSyncFailure } from '../services/demo';
 import { setOffline, retryAll, pullStock } from '../services/tallySync';
 import { login } from '../services/account';
@@ -52,20 +53,20 @@ const tour = [
     '.checkout-main',
   ],
   [
-    'Your order, your timeline',
-    'View your new order. Stock is decremented and Tally jobs have been created.',
+    'Your WhatsApp request',
+    'View your request details. Demo stock is decremented and Tally jobs have been created.',
     '/account',
     '.account-content',
   ],
   [
     'Behind the garage doors',
-    'The same order is now visible to the admin. Advance its status to Confirmed.',
+    'The same request is visible to the admin for billing and demo payment records.',
     '/admin/orders',
     '.admin-content',
   ],
   [
-    'Updates reach the collector',
-    'Return to the collector timeline to see the confirmed status immediately.',
+    'Prepare a bill',
+    'Return to the request details to generate a printable demo bill.',
     '/account',
     '.account-content',
   ],
@@ -151,10 +152,10 @@ export default function Demo() {
       }, 'Tour order placed.');
     if (step === 6)
       ui.run(() => {
-        const o = state.orders.find((o) => o.userId === 'u1' && o.status === 'Placed');
-        if (!o) throw Error('Place a tour order first.');
-        advanceOrder(o.id);
-      }, 'Order confirmed. The collector timeline updated.');
+        const o = state.orders.find((o) => o.userId === 'u1');
+        if (!o) throw Error('Place a tour request first.');
+        generateOrderBill(o);
+      }, 'Demo bill saved for the request.');
     if (step === 9) ui.run(simulateSyncFailure, 'A failed sync job was created.');
     if (step === 10)
       ui.run(() => {
@@ -169,7 +170,7 @@ export default function Demo() {
   const actionLabels: Record<number, string> = {
     2: 'Add 3 starter models',
     4: 'Place tour order',
-    6: 'Confirm tour order',
+    6: 'Generate demo bill',
     9: 'Create failed sync',
     10: 'Bring online & retry',
     11: 'Pull stock snapshot',

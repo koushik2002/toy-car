@@ -285,7 +285,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             <h3>THE COLLECTOR'S CORNER</h3>
-            <Link to="/account">My account & orders</Link>
+            <Link to="/account">My account & requests</Link>
             <Link to="/wishlist">Wishlist</Link>
             <Link to="/account/addresses">Saved addresses</Link>
             <Link to="/features">Explore every feature</Link>

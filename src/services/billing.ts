@@ -1,5 +1,7 @@
 import type { Bill, BillLine, CommerceSettings, Order } from '../types';
 import { getState, transact } from './storage';
+import { moveStock } from './inventory';
+import { queueSync } from './tallySync';
 import { normalizeWhatsAppNumber } from './whatsapp';
 
 export const roundMoney = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
@@ -66,18 +68,21 @@ export function generateBill(input: BillInput) {
   const settings = getState().commerce;
   const gstRate = settings.gstEnabled ? settings.gstRate : 0;
   const totals = billTotals(input.items, input.discount, input.shipping, gstRate);
-  return storeBill({
-    ...input,
-    ...totals,
-    customerName: input.customerName.trim(),
-    sellerName: settings.sellerName,
-    sellerAddress: settings.sellerAddress,
-    gstEnabled: settings.gstEnabled,
-    gstRate,
-    gstin: settings.gstEnabled ? settings.gstin : '',
-  });
+  return storeBill(
+    {
+      ...input,
+      ...totals,
+      customerName: input.customerName.trim(),
+      sellerName: settings.sellerName,
+      sellerAddress: settings.sellerAddress,
+      gstEnabled: settings.gstEnabled,
+      gstRate,
+      gstin: settings.gstEnabled ? settings.gstin : '',
+    },
+    true,
+  );
 }
-function storeBill(input: Omit<Bill, 'id' | 'at'>) {
+function storeBill(input: Omit<Bill, 'id' | 'at'>, deductStock = false) {
   let bill!: Bill;
   transact((d) => {
     const prefix = `TK-BILL-${new Date().getFullYear()}-`;
@@ -88,6 +93,26 @@ function storeBill(input: Omit<Bill, 'id' | 'at'>) {
       id: `${prefix}${String(number).padStart(4, '0')}`,
       at: new Date().toISOString(),
     };
+    if (deductStock) {
+      const quantities = new Map<string, number>();
+      for (const line of input.items) {
+        const sku = line.sku.trim();
+        if (!sku || !d.products.some((product) => product.sku === sku))
+          throw Error(`Choose a catalogue model for ${line.name} before generating the bill.`);
+        quantities.set(sku, (quantities.get(sku) ?? 0) + line.quantity);
+      }
+      for (const [sku, quantity] of quantities) {
+        const product = d.products.find((item) => item.sku === sku)!;
+        if (product.stock < quantity)
+          throw Error(`Only ${product.stock} available for ${product.name}. Bill not saved.`);
+      }
+      for (const [sku, quantity] of quantities) {
+        const product = d.products.find((item) => item.sku === sku)!;
+        moveStock(d, product.id, -quantity, `Manual bill ${bill.id}`);
+        product.sold += quantity;
+      }
+      queueSync(d, 'Sales Voucher', bill.id);
+    }
     d.bills.unshift(bill);
   });
   return bill;

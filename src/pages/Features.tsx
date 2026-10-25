@@ -41,13 +41,13 @@ const groups = [
         '/account',
       ],
       [
-        'Orders & invoices',
-        'Status filters, detailed timeline, price snapshots, tracking, printable invoice and reorder.',
+        'Requests & invoices',
+        'Saved WhatsApp requests, price snapshots, printable demo bills and repeat selection.',
         '/account',
       ],
       [
-        'Cancel & return',
-        'Cancel before packing with stock restoration. Seven-day returns with reason and photo preview.',
+        'Cancel a request',
+        'Cancel a new demo request and restore its browser-local stock.',
         '/account',
       ],
       ['Wishlist', 'Save collectibles and add them to your garage later.', '/wishlist'],
@@ -66,7 +66,11 @@ const groups = [
         'Create and save bills, print or save as PDF, and configure optional future GST.',
         '/admin/billing',
       ],
-      ['Admin dashboard', 'Six KPIs, 30-day order chart, brand sales and recent orders.', '/admin'],
+      [
+        'Admin dashboard',
+        'Six KPIs, 30-day request chart, requested item value and recent requests.',
+        '/admin',
+      ],
       [
         'Product management',
         'Search/filter; add, edit, delete; image preview; validated CSV import/export.',
@@ -79,7 +83,7 @@ const groups = [
       ],
       [
         'Order operations',
-        'Advance fulfilment, courier/tracking, COD collected and mocked refunds.',
+        'Review WhatsApp request records, generate bills and record demo payment.',
         '/admin/orders',
       ],
       [

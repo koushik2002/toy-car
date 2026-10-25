@@ -1,390 +1,242 @@
 import { useState } from 'react';
 import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
-import {
-  ArrowRight,
-  ArrowLeft,
-  Check,
-  Printer,
-  Truck,
-  RotateCcw,
-  Package,
-  X,
-  MessageCircle,
-  Copy,
-} from 'lucide-react';
+import { ArrowLeft, Check, Printer, Package, MessageCircle, Copy, RotateCcw } from 'lucide-react';
 import BillDocument from '../components/BillDocument';
 import { generateOrderBill } from '../services/billing';
 import { whatsappOrderLink, orderMessage } from '../services/whatsapp';
 import { useStore } from '../hooks/useStore';
 import { money, dateTime, asset } from '../services/format';
-import {
-  cancelOrder,
-  requestReturn,
-  reorder,
-  canReturn,
-  advanceOrder,
-  refundOrder,
-  markCollected,
-} from '../services/orders';
-import { stages } from '../data/seed';
-import { Badge, Empty, Modal, ImageUpload, useUI } from '../components/UI';
+import { cancelOrder, reorder, markCollected } from '../services/orders';
+import { Badge, Empty, Modal, useUI } from '../components/UI';
+
 export default function OrderDetail() {
-  const { id } = useParams(),
-    state = useStore(),
-    location = useLocation(),
-    nav = useNavigate(),
-    ui = useUI(),
-    admin = location.pathname.startsWith('/admin');
-  const o = state.orders.find((o) => o.id === id && (admin || o.userId === state.userId));
-  const [returnOpen, setReturnOpen] = useState(false),
-    [reason, setReason] = useState(''),
-    [photo, setPhoto] = useState(''),
-    [courier, setCourier] = useState('Demo Express'),
-    [tracking, setTracking] = useState(''),
-    [confirmCancel, setConfirmCancel] = useState(false);
-  if (!o)
+  const { id } = useParams();
+  const state = useStore();
+  const location = useLocation();
+  const nav = useNavigate();
+  const ui = useUI();
+  const admin = location.pathname.startsWith('/admin');
+  const order = state.orders.find(
+    (item) => item.id === id && (admin || item.userId === state.userId),
+  );
+  const [confirmCancel, setConfirmCancel] = useState(false);
+
+  if (!order)
     return (
       <div className="container page">
-        <Empty
-          title="Order not found"
-          detail="Switch to the collector who owns this order, or open the admin demo."
-        >
+        <Empty title="Request not found" detail="Open the collector account used for this request.">
           <Link to="/account" className="btn btn-primary">
             My account
           </Link>
         </Empty>
       </div>
     );
-  const printBill = state.bills.find((bill) => bill.orderId === o.id);
-  const confirmed = new URLSearchParams(location.search).has('confirmed'),
-    terminal = ['Cancelled', 'Return requested', 'Refunded'].includes(o.status);
+
+  const bill = state.bills.find((item) => item.orderId === order.id);
+  const confirmed = new URLSearchParams(location.search).has('confirmed');
+  const cancelled = ['Cancelled', 'Refunded'].includes(order.status);
+
   return (
     <div className="container page order-detail-page">
       <Link className="text-link" to={admin ? '/admin/orders' : '/account'}>
-        <ArrowLeft size={15} /> {admin ? 'All orders' : 'My orders'}
+        <ArrowLeft size={15} /> {admin ? 'All requests' : 'My requests'}
       </Link>
       {confirmed && (
         <div className="order-success">
           <div>
             <Check size={32} />
           </div>
-          <span className="eyebrow red">YOUR WHATSAPP ORDER REQUEST</span>
+          <span className="eyebrow red">YOUR WHATSAPP REQUEST</span>
           <h1>
             GOOD TASTE.
             <br />
             GREAT COLLECTION.
           </h1>
           <p>
-            Your order is saved in this demo. Tap Send in WhatsApp to share it with Tiny Kars.
+            This request is saved in your browser. Tap Send in WhatsApp to share it with Tiny Kars.
             <br />
-            The shop will confirm availability, delivery and payment in the chat.
+            The shop will confirm availability and payment in the chat.
           </p>
         </div>
       )}
       <div className="section-top order-detail-heading">
         <div>
           <span className="eyebrow red">
-            {admin ? 'ADMIN ORDER DETAIL' : 'YOUR COLLECTIBLE JOURNEY'}
+            {admin ? 'WHATSAPP REQUEST RECORD' : 'YOUR WHATSAPP REQUEST'}
           </span>
-          <h2>{o.id}</h2>
-          <p className="muted">Placed {dateTime(o.at)} IST</p>
+          <h2>{order.id}</h2>
+          <p className="muted">Saved {dateTime(order.at)} IST · Demo data on this device only</p>
         </div>
-        <Badge status={o.status} />
+        {cancelled && <Badge status={order.status} />}
       </div>
       <div className="order-detail-layout">
-        <section>
-          <div className="panel">
-            <h2>
-              <Truck size={19} /> THE JOURNEY TO YOUR GARAGE
-            </h2>
-            <ol className="order-timeline">
-              {stages.map((s, i) => {
-                const event = o.timeline.find((e) => e.status === s),
-                  active = o.status === s;
-                return (
-                  <li key={s} className={`${event ? 'done' : ''} ${active ? 'current' : ''}`}>
-                    <span>{event ? <Check size={14} /> : i + 1}</span>
-                    <div>
-                      <b>{s}</b>
-                      {event ? (
-                        <small>{dateTime(event.at)} IST</small>
-                      ) : (
-                        <small>{terminal ? '—' : 'Coming up'}</small>
-                      )}
-                      {s === 'Shipped' && event && (
-                        <small>
-                          {o.courier} · {o.tracking}
-                        </small>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-              {terminal && (
-                <li className="done terminal">
-                  <span>
-                    <X size={13} />
-                  </span>
-                  <div>
-                    <b>{o.status}</b>
-                    <small>{dateTime(o.timeline[o.timeline.length - 1].at)} IST</small>
-                    {o.returnReason && <p>{o.returnReason}</p>}
-                    {o.returnPhoto && (
-                      <img
-                        className="upload-preview"
-                        src={o.returnPhoto}
-                        alt="Customer return photo"
-                      />
-                    )}
-                  </div>
-                </li>
-              )}
-            </ol>
-          </div>
-          <div className="panel">
-            <h2>
-              <Package size={19} /> YOUR COLLECTIBLES
-            </h2>
-            {o.items.map((i) => (
-              <div className="cart-line" key={i.productId}>
-                <img src={asset(i.image)} alt={i.name} />
-                <div>
-                  <b>{i.name}</b>
-                  <small>
-                    {i.sku} · Qty {i.quantity}
-                  </small>
-                  <strong>{money(i.price)} each</strong>
-                </div>
-                <strong>{money(i.price * i.quantity)}</strong>
+        <section className="panel">
+          <h2>
+            <Package size={19} /> REQUESTED COLLECTIBLES
+          </h2>
+          {order.items.map((item) => (
+            <div className="cart-line" key={item.productId}>
+              <img src={asset(item.image)} alt={item.name} />
+              <div>
+                <b>{item.name}</b>
+                <small>
+                  {item.sku} · Qty {item.quantity}
+                </small>
+                <strong>{money(item.price)} each</strong>
               </div>
-            ))}
-          </div>
+              <strong>{money(item.price * item.quantity)}</strong>
+            </div>
+          ))}
         </section>
         <aside>
           <div className="panel">
-            <h2>DELIVERY DETAILS</h2>
-            <b>{o.address.name}</b>
+            <h2>CUSTOMER & BILLING</h2>
+            <b>{order.address.name}</b>
             <p>
-              {o.address.line}
+              {order.address.line}
               <br />
-              {o.address.city}, {o.address.state} {o.address.pin}
+              {order.address.city}, {order.address.state} {order.address.pin}
               <br />
-              {o.address.phone}
+              {order.address.phone}
             </p>
             <hr />
-            <h3>{o.payment === 'WhatsApp' ? 'PAYMENT ARRANGED ON WHATSAPP' : 'PAYMENT · COD'}</h3>
+            <h3>
+              {order.payment === 'WhatsApp' ? 'PAYMENT ARRANGED ON WHATSAPP' : 'PAYMENT · COD'}
+            </h3>
             <Badge
-              status={
-                o.paid ? 'Paid (demo)' : o.status === 'Refunded' ? 'Refunded' : 'Payment pending'
-              }
+              status={order.paid ? 'Paid (demo)' : cancelled ? order.status : 'Payment pending'}
             />
             <div className="totals">
               <p>
                 <span>Subtotal</span>
-                <span>{money(o.subtotal)}</span>
+                <span>{money(order.subtotal)}</span>
               </p>
-              {o.discount > 0 && (
+              {order.discount > 0 && (
                 <p className="saving">
                   <span>Discounts</span>
-                  <span>−{money(o.discount)}</span>
+                  <span>−{money(order.discount)}</span>
                 </p>
               )}
               <p>
                 <span>Shipping</span>
-                <span>{o.shipping ? money(o.shipping) : 'FREE'}</span>
+                <span>{order.shipping ? money(order.shipping) : 'FREE'}</span>
               </p>
-              {o.gst > 0 && (
+              {order.gst > 0 && (
                 <p>
-                  <span>GST ({o.gstRate ?? 0}%)</span>
-                  <span>{money(o.gst)}</span>
+                  <span>GST ({order.gstRate ?? 0}%)</span>
+                  <span>{money(order.gst)}</span>
                 </p>
               )}
               <p className="total">
                 <strong>Total</strong>
-                <strong>{money(o.total)}</strong>
+                <strong>{money(order.total)}</strong>
               </p>
-              <small>{o.gst > 0 ? 'GST included in the total.' : 'No GST charged.'}</small>
+              <small>{order.gst > 0 ? 'GST included in the total.' : 'No GST charged.'}</small>
             </div>
-            {!admin &&
-              o.payment === 'WhatsApp' &&
-              !['Cancelled', 'Refunded'].includes(o.status) && (
-                <>
-                  <a
-                    className="btn btn-whatsapp full"
-                    href={whatsappOrderLink(state.commerce.whatsappNumber, o)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <MessageCircle size={17} />
-                    Open order in WhatsApp
-                  </a>
-                  <button
-                    className="btn full"
-                    onClick={async () => {
-                      try {
-                        await navigator.clipboard.writeText(orderMessage(o));
-                        ui.toast('Order details copied.');
-                      } catch {
-                        ui.toast('Copy unavailable. Open the order in WhatsApp instead.', true);
-                      }
-                    }}
-                  >
-                    <Copy size={17} />
-                    Copy order details
-                  </button>
-                </>
-              )}
-            <button
-              className="btn full"
-              onClick={() =>
-                ui.run(() => {
-                  const bill = generateOrderBill(o);
-                  if (admin) nav(`/admin/billing?bill=${encodeURIComponent(bill.id)}`);
-                }, 'Bill generated and saved.')
-              }
-            >
-              <Printer size={17} />
-              Generate bill
-            </button>
-            {!admin && printBill && (
+            {!admin && order.payment === 'WhatsApp' && !cancelled && (
+              <>
+                <a
+                  className="btn btn-whatsapp full"
+                  href={whatsappOrderLink(state.commerce.whatsappNumber, order)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MessageCircle size={17} /> Open request in WhatsApp
+                </a>
+                <button
+                  className="btn full"
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(orderMessage(order));
+                      ui.toast('Request details copied.');
+                    } catch {
+                      ui.toast('Copy unavailable. Open WhatsApp instead.', true);
+                    }
+                  }}
+                >
+                  <Copy size={17} /> Copy request details
+                </button>
+              </>
+            )}
+            {!bill && !cancelled && (
+              <button
+                className="btn full"
+                onClick={() =>
+                  ui.run(() => {
+                    const saved = generateOrderBill(order);
+                    if (admin) nav(`/admin/billing?bill=${encodeURIComponent(saved.id)}`);
+                  }, 'Bill generated and saved.')
+                }
+              >
+                <Printer size={17} /> Generate bill
+              </button>
+            )}
+            {admin && bill && (
+              <button
+                className="btn full"
+                onClick={() => nav(`/admin/billing?bill=${encodeURIComponent(bill.id)}`)}
+              >
+                <Printer size={17} /> Open saved bill
+              </button>
+            )}
+            {!admin && bill && (
               <button className="btn full" onClick={() => window.print()}>
-                <Printer size={17} />
-                Print / Save PDF
+                <Printer size={17} /> Print / Save PDF
               </button>
             )}
           </div>
           <div className="panel order-actions">
             {admin ? (
               <>
-                <h2>ADMIN ACTIONS</h2>
-                {o.status === 'Packed' && (
-                  <>
-                    <label>
-                      Courier
-                      <input value={courier} onChange={(e) => setCourier(e.target.value)} />
-                    </label>
-                    <label>
-                      Tracking ID
-                      <input
-                        value={tracking}
-                        onChange={(e) => setTracking(e.target.value)}
-                        placeholder="DEMO123456"
-                      />
-                    </label>
-                  </>
-                )}
-                {stages.includes(o.status) && o.status !== 'Delivered' && (
-                  <button
-                    className="btn btn-primary full"
-                    onClick={() =>
-                      ui.run(
-                        () => advanceOrder(o.id, courier, tracking),
-                        'Order status updated. Customer timeline is now updated too.',
-                      )
-                    }
-                  >
-                    Advance to {stages[stages.indexOf(o.status) + 1]} <ArrowRight size={16} />
-                  </button>
-                )}
-                {!o.paid && !['Cancelled', 'Refunded'].includes(o.status) && (
+                <h2>BILLING ACTIONS</h2>
+                {!order.paid && !cancelled && (
                   <button
                     className="btn full"
                     onClick={() =>
-                      ui.run(() => markCollected(o.id), 'Payment marked received (demo).')
+                      ui.run(() => markCollected(order.id), 'Payment marked received (demo).')
                     }
                   >
                     Mark payment received
                   </button>
                 )}
-                {['Cancelled', 'Return requested'].includes(o.status) && (
-                  <button
-                    className="btn full"
-                    onClick={() =>
-                      ui.run(() => refundOrder(o.id), 'Demo refund processed; stock restored once.')
-                    }
-                  >
-                    Process demo refund
-                  </button>
-                )}
-                <Link className="text-link" to="/account">
-                  Check customer timeline <ArrowRight size={15} />
-                </Link>
+                <p className="muted">
+                  This browser demo cannot verify whether the WhatsApp message was sent or payment
+                  was received.
+                </p>
               </>
             ) : (
               <>
                 <button
                   className="btn btn-primary full"
                   onClick={() => {
-                    if (ui.run(() => reorder(o.id), 'Models added to your garage.')) nav('/cart');
+                    if (ui.run(() => reorder(order.id), 'Models added to your garage.'))
+                      nav('/cart');
                   }}
                 >
-                  <RotateCcw size={17} /> Reorder these models
+                  <RotateCcw size={17} /> Add these models again
                 </button>
-                {['Placed', 'Confirmed'].includes(o.status) && (
+                {['Placed', 'Confirmed'].includes(order.status) && (
                   <button className="btn full" onClick={() => setConfirmCancel(true)}>
-                    Cancel order
+                    Cancel request
                   </button>
                 )}
-                {canReturn(o) && (
-                  <button className="btn full" onClick={() => setReturnOpen(true)}>
-                    Request a return
-                  </button>
-                )}
-                <small className="muted">
-                  Cancellation before packing. Returns within 7 days of delivery.
-                </small>
               </>
             )}
           </div>
         </aside>
       </div>
-      {printBill && <BillDocument bill={printBill} className="invoice-only" />}
-      {returnOpen && (
-        <Modal title="Request a return" onClose={() => setReturnOpen(false)}>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (
-                ui.run(
-                  () => requestReturn(o.id, reason, photo),
-                  'Return requested. The admin can review it.',
-                )
-              )
-                setReturnOpen(false);
-            }}
-          >
-            <p>Tell us what went wrong with your collectible.</p>
-            <label>
-              Reason
-              <textarea
-                required
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder="For example: damaged in transit"
-              />
-            </label>
-            <ImageUpload onChange={setPhoto} label="Optional photo (PNG/JPG/WebP, up to 2 MB)" />
-            {photo && <img className="upload-preview" src={photo} alt="Return photo preview" />}
-            <button className="btn btn-primary full">
-              Submit return request <ArrowRight size={17} />
-            </button>
-          </form>
-        </Modal>
-      )}
+      {bill && <BillDocument bill={bill} className="invoice-only" />}
       {confirmCancel && (
-        <Modal title="Cancel this order?" onClose={() => setConfirmCancel(false)}>
-          <p>
-            Your models will return to available stock. Any demo refund can be processed from the
-            admin panel.
-          </p>
+        <Modal title="Cancel this request?" onClose={() => setConfirmCancel(false)}>
+          <p>The demo restores the reserved stock on this device.</p>
           <button
             className="btn btn-primary full"
             onClick={() => {
-              if (ui.run(() => cancelOrder(o.id), 'Order cancelled; stock restored.'))
+              if (ui.run(() => cancelOrder(order.id), 'Request cancelled; demo stock restored.'))
                 setConfirmCancel(false);
             }}
           >
-            Cancel {o.id}
+            Cancel {order.id}
           </button>
         </Modal>
       )}

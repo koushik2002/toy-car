@@ -16,7 +16,7 @@ const items = [
   ['', 'Dashboard', LayoutDashboard],
   ['products', 'Products', Package],
   ['inventory', 'Inventory', Boxes],
-  ['orders', 'Orders', ShoppingBag],
+  ['orders', 'WhatsApp requests', ShoppingBag],
   ['billing', 'Bills & settings', ReceiptText],
   ['customers', 'Collectors', Users],
   ['offers', 'Offers & coupons', Tags],

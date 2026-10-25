@@ -4,22 +4,20 @@ import { Search, ArrowUpRight } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { money, dateTime } from '../services/format';
 import AdminLayout from '../components/AdminLayout';
-import { Badge, Empty } from '../components/UI';
+import { Empty } from '../components/UI';
 export default function AdminOrders() {
   const s = useStore(),
     [q, setQ] = useState(''),
-    [status, setStatus] = useState(''),
     [payment, setPayment] = useState('');
   const orders = s.orders.filter(
     (o) =>
-      (!status || o.status === status) &&
       (!payment || o.payment === payment) &&
       `${o.id} ${s.users.find((u) => u.id === o.userId)?.name}`
         .toLowerCase()
         .includes(q.toLowerCase()),
   );
   return (
-    <AdminLayout title="THE ORDER LINEUP.">
+    <AdminLayout title="WHATSAPP REQUESTS.">
       <div className="admin-toolbar">
         <div className="search-input">
           <Search size={17} />
@@ -30,26 +28,6 @@ export default function AdminOrders() {
             placeholder="Order number or collector"
           />
         </div>
-        <select
-          aria-label="Order status filter"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option value="">All statuses</option>
-          {[
-            'Placed',
-            'Confirmed',
-            'Packed',
-            'Shipped',
-            'Out for delivery',
-            'Delivered',
-            'Cancelled',
-            'Return requested',
-            'Refunded',
-          ].map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
         <select
           aria-label="Payment filter"
           value={payment}
@@ -62,17 +40,18 @@ export default function AdminOrders() {
         </select>
       </div>
       <p className="muted">
-        {orders.length} orders · Open an order to advance status, add tracking, or process a refund.
+        {orders.length} browser-local requests · Open one to prepare a bill or record a demo
+        payment.
       </p>
       <div className="panel table-panel">
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Order</th>
+                <th>Request</th>
                 <th>Collector</th>
                 <th>When (IST)</th>
-                <th>Status</th>
+                <th>Bill</th>
                 <th>Payment</th>
                 <th>Total</th>
                 <th />
@@ -90,7 +69,7 @@ export default function AdminOrders() {
                   </td>
                   <td>{dateTime(o.at)}</td>
                   <td>
-                    <Badge status={o.status} />
+                    {s.bills.some((bill) => bill.orderId === o.id) ? 'Saved' : 'Not generated'}
                   </td>
                   <td>
                     {o.payment}
@@ -119,7 +98,7 @@ export default function AdminOrders() {
             </tbody>
           </table>
         </div>
-        {!orders.length && <Empty title="No orders match" />}
+        {!orders.length && <Empty title="No requests match" />}
       </div>
     </AdminLayout>
   );

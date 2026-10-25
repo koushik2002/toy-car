@@ -40,7 +40,10 @@ export default function AdminBilling() {
           <div>
             <span className="eyebrow">TINY KARS / BILLING DESK</span>
             <h2>From your garage to their shelf.</h2>
-            <p>Create a bill for an online or offline order. Save it, then print or save as PDF.</p>
+            <p>
+              Create a bill from catalogue models. Saving it deducts demo stock; then print or save
+              as PDF.
+            </p>
           </div>
           <span className={`billing-tax-state ${state.commerce.gstEnabled ? 'enabled' : ''}`}>
             {state.commerce.gstEnabled ? `GST enabled · ${rate}%` : 'GST off · no tax charged'}
@@ -99,7 +102,7 @@ export default function AdminBilling() {
                   note,
                 });
                 setParams({ bill: bill.id });
-              }, 'Bill generated and saved.');
+              }, 'Bill saved; catalogue stock reduced in this browser.');
             }}
           >
             <div className="billing-workspace">
@@ -184,6 +187,7 @@ export default function AdminBilling() {
                         Catalogue model
                         <select
                           aria-label={`Catalogue model ${index + 1}`}
+                          required
                           value={state.products.find((p) => p.sku === item.sku)?.id ?? ''}
                           onChange={(e) => {
                             const product = state.products.find((p) => p.id === e.target.value);
@@ -195,7 +199,7 @@ export default function AdminBilling() {
                             );
                           }}
                         >
-                          <option value="">Custom item</option>
+                          <option value="">Select a catalogue model</option>
                           {state.products.map((p) => (
                             <option key={p.id} value={p.id}>
                               {p.name} · {p.sku}
@@ -215,11 +219,7 @@ export default function AdminBilling() {
                       <div className="billing-field-grid">
                         <label>
                           SKU
-                          <input
-                            aria-label={`Item SKU ${index + 1}`}
-                            value={item.sku}
-                            onChange={(e) => updateLine(index, { sku: e.target.value })}
-                          />
+                          <input aria-label={`Item SKU ${index + 1}`} value={item.sku} readOnly />
                         </label>
                         <label>
                           HSN (future GST)
@@ -337,11 +337,12 @@ export default function AdminBilling() {
                   Generate bill
                 </button>
                 <p className="muted">
-                  Bills are saved in this browser. Creating a manual bill does not change inventory.
+                  Bills and stock changes are saved together in this browser. Choose a catalogue
+                  model for every bill line; out-of-stock bills are rejected.
                 </p>
                 <p className="muted">
-                  For an existing order, use Generate bill on its order detail to keep the same
-                  totals.
+                  For an existing WhatsApp request, generate its bill from the request detail. That
+                  stock was already deducted at checkout.
                 </p>
               </aside>
             </div>

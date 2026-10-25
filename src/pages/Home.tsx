@@ -318,7 +318,7 @@ export default function Home() {
             <ShieldCheck size={17} /> Order on WhatsApp
           </span>
           <span>
-            <PackageCheck size={17} /> 7-day returns
+            <PackageCheck size={17} /> Questions? Chat with us
           </span>
         </div>
       </section>

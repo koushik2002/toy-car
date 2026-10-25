@@ -5,7 +5,7 @@ import { useStore } from '../hooks/useStore';
 import { login, loginPhone, logout, saveProfile, saveAddress } from '../services/account';
 import { money, date, asset } from '../services/format';
 import { transact } from '../services/storage';
-import { Badge, Empty, Modal, useUI } from '../components/UI';
+import { Empty, Modal, useUI } from '../components/UI';
 import AddressFields, { blankAddress } from '../components/AddressForm';
 import ProductCard from '../components/ProductCard';
 import type { Address } from '../types';
@@ -20,7 +20,6 @@ export default function Account() {
     [otp, setOtp] = useState(''),
     [otpSent, setOtpSent] = useState(false),
     [showLogin, setShowLogin] = useState(!user),
-    [status, setStatus] = useState(''),
     [address, setAddress] = useState<Address | null>(null),
     [name, setName] = useState(user?.name ?? ''),
     [email, setEmail] = useState(user?.email ?? '');
@@ -29,9 +28,7 @@ export default function Account() {
     setEmail(user?.email ?? '');
   }, [user?.id]);
   const tab = location.pathname.split('/')[2] || 'orders';
-  const orders = state.orders.filter(
-    (o) => o.userId === user?.id && (!status || o.status === status),
-  );
+  const orders = state.orders.filter((o) => o.userId === user?.id);
   function afterLogin() {
     setShowLogin(false);
     if (params.get('next') === 'checkout') nav('/checkout');
@@ -136,7 +133,7 @@ export default function Account() {
       <div className="page-heading">
         <span className="eyebrow red">THE COLLECTOR'S CORNER</span>
         <h1>HEY, {user.name.split(' ')[0].toUpperCase()}.</h1>
-        <p>Your orders, your grails, your growing garage.</p>
+        <p>Your WhatsApp requests, your grails, your growing garage.</p>
       </div>
       <div className="account-layout">
         <aside className="account-nav">
@@ -153,7 +150,7 @@ export default function Account() {
             </div>
           </div>
           <NavLink to="/account" end>
-            <Package size={17} /> My orders
+            <Package size={17} /> My requests
           </NavLink>
           <NavLink to="/wishlist">
             <Heart size={17} /> Wishlist
@@ -180,27 +177,7 @@ export default function Account() {
           {tab === 'orders' ? (
             <>
               <div className="section-top">
-                <h2>MY ORDERS</h2>
-                <select
-                  aria-label="Filter my orders by status"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  <option value="">All statuses</option>
-                  {[
-                    'Placed',
-                    'Confirmed',
-                    'Packed',
-                    'Shipped',
-                    'Out for delivery',
-                    'Delivered',
-                    'Cancelled',
-                    'Return requested',
-                    'Refunded',
-                  ].map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
+                <h2>MY WHATSAPP REQUESTS</h2>
               </div>
               {orders.length ? (
                 orders.map((o) => (
@@ -215,7 +192,6 @@ export default function Account() {
                           model(s)
                         </small>
                       </div>
-                      <Badge status={o.status} />
                     </div>
                     <div className="order-card-body">
                       <div className="order-images">
@@ -229,13 +205,13 @@ export default function Account() {
                         <strong>{money(o.total)}</strong>
                       </div>
                       <Link className="btn btn-small" to={`/order/${o.id}`}>
-                        View order <ArrowRight size={15} />
+                        View request <ArrowRight size={15} />
                       </Link>
                     </div>
                   </article>
                 ))
               ) : (
-                <Empty title="Your next story starts here" detail="No orders with this status.">
+                <Empty title="Your next story starts here" detail="No requests saved yet.">
                   <Link className="btn btn-primary" to="/shop">
                     Explore the collection
                   </Link>

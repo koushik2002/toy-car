@@ -191,10 +191,10 @@ export default function ProductPage() {
               <ShieldCheck size={17} /> Collector graded
             </span>
             <span>
-              <PackageCheck size={17} /> 7-day returns
+              <PackageCheck size={17} /> Ask us on WhatsApp
             </span>
             <span>
-              <Truck size={17} /> 48-hour dispatch
+              <Truck size={17} /> Delivery confirmed in chat
             </span>
           </div>
         </div>

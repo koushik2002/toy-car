@@ -43,9 +43,7 @@ test('storefront is responsive with local artwork and working filter/search/prod
   );
   expect(errors).toEqual([]);
 });
-test('WhatsApp bundle checkout, persistence, cancellation and customer/admin timeline', async ({
-  page,
-}, info) => {
+test('WhatsApp request, bill, stock restoration and no tracking UI', async ({ page }, info) => {
   await page.goto('./#/product/p001');
   await expect(page.getByRole('button', { name: 'Add to your garage' })).toBeVisible();
   await page.getByRole('button', { name: 'Increase quantity' }).click();
@@ -92,11 +90,13 @@ test('WhatsApp bundle checkout, persistence, cancellation and customer/admin tim
     ),
   ).toBe(5);
   await page.goto(`./#/admin/orders/${id}`);
-  await page.getByRole('button', { name: 'Advance to Confirmed' }).click();
-  await expect(page.getByRole('button', { name: 'Advance to Packed' })).toBeVisible();
+  await expect(page.getByText('TRACKING ID')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Generate bill', exact: true }).click();
+  await expect(page).toHaveURL(/admin\/billing\?bill=/);
   await page.goto(customerURL);
-  await expect(page.locator('.order-timeline .current')).toContainText('Confirmed');
-  await page.getByRole('button', { name: 'Cancel order', exact: true }).click();
+  await expect(page.locator('.order-timeline')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Print / Save PDF' })).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel request', exact: true }).click();
   await page
     .getByRole('dialog')
     .getByRole('button', { name: `Cancel ${id}` })
@@ -204,6 +204,11 @@ test('billing generates saved printable bills without GST and preserves them aft
   await page.getByRole('spinbutton', { name: 'Bill discount (₹)' }).fill('48');
   await page.getByRole('spinbutton', { name: 'Bill shipping (₹)' }).fill('79');
   await page.getByRole('button', { name: 'Generate bill', exact: true }).click();
+  expect(
+    await page.evaluate(
+      () => JSON.parse(localStorage.getItem('tiny-kars-demo-v1')!).products[0].stock,
+    ),
+  ).toBe(6);
   await expect(page.locator('.bill-document')).toContainText('Koushik');
   await expect(page.locator('.bill-grand-total')).toContainText('₹529');
   await expect(page.locator('.bill-document')).toContainText('No GST charged');

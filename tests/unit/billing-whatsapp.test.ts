@@ -19,7 +19,7 @@ const input = () => ({
   shipping: 79,
   note: 'Thank you',
 });
-it('creates unique saved bills with no GST and without changing stock', () => {
+it('creates unique saved bills and deducts catalogue stock exactly once per bill', () => {
   const before = getState().products[0].stock;
   const first = generateBill(input()),
     second = generateBill(input());
@@ -28,7 +28,28 @@ it('creates unique saved bills with no GST and without changing stock', () => {
   expect(first.gstin).toBe('');
   expect(second.id).not.toBe(first.id);
   expect(getState().bills).toHaveLength(2);
-  expect(getState().products[0].stock).toBe(before);
+  expect(getState().products[0].stock).toBe(before - 4);
+  expect(getState().movements.filter((m) => m.reason.startsWith('Manual bill'))).toHaveLength(2);
+  expect(getState().jobs.some((j) => j.reference === first.id && j.type === 'Sales Voucher')).toBe(
+    true,
+  );
+});
+it('rejects unmatched and oversold bill lines without saving any partial change', () => {
+  const before = getState();
+  expect(() => generateBill({ ...input(), items: [{ ...input().items[0], sku: '' }] })).toThrow(
+    'catalogue model',
+  );
+  expect(getState()).toBe(before);
+  expect(() =>
+    generateBill({
+      ...input(),
+      items: [
+        { ...input().items[0], quantity: 5 },
+        { ...input().items[0], quantity: 4 },
+      ],
+    }),
+  ).toThrow('Only 8 available');
+  expect(getState()).toBe(before);
 });
 it('rounds decimal amounts and rejects malformed bills without saving partial data', () => {
   expect(
@@ -85,6 +106,7 @@ it('preserves order tax and seller snapshots when generating a bill later', () =
   const order = getState().orders.find((o) => o.id === id)!;
   saveCommerceSettings({ ...getState().commerce, gstEnabled: false, gstRate: 5, gstin: '' });
   const bill = generateOrderBill(order);
+  expect(getState().products[0].stock).toBe(5);
   expect(bill.total).toBe(728);
   expect(bill.gst).toBe(99);
   expect(bill.gstRate).toBe(18);

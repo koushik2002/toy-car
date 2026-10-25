@@ -5,7 +5,7 @@ import {
   IndianRupee,
   TrendingUp,
   Boxes,
-  Truck,
+  ReceiptText,
   RefreshCw,
   Activity,
 } from 'lucide-react';
@@ -66,10 +66,10 @@ export default function AdminDashboard() {
       }),
     );
   const metrics = [
-    ['Today’s orders', todayOrders.length, ShoppingBag, '/admin/orders'],
-    ['Order revenue', money(revenue), IndianRupee, '/admin/orders'],
+    ['Today’s requests', todayOrders.length, ShoppingBag, '/admin/orders'],
+    ['Request value (demo)', money(revenue), IndianRupee, '/admin/orders'],
     [
-      'Average order value',
+      'Average request value',
       money(
         revenue /
           Math.max(
@@ -83,12 +83,7 @@ export default function AdminDashboard() {
       '/admin/orders',
     ],
     ['Low-stock models', low, Boxes, '/admin/inventory'],
-    [
-      'Pending shipments',
-      s.orders.filter((o) => ['Placed', 'Confirmed', 'Packed'].includes(o.status)).length,
-      Truck,
-      '/admin/orders',
-    ],
+    ['Saved bills', s.bills.length, ReceiptText, '/admin/billing'],
     ['Failed sync jobs', failed, RefreshCw, '/admin/tally'],
   ] as const;
   return (
@@ -109,7 +104,7 @@ export default function AdminDashboard() {
       <div className="charts-grid">
         <div className="panel chart-panel">
           <div className="section-top">
-            <h2>ORDERS, LAST 30 DAYS</h2>
+            <h2>REQUESTS, LAST 30 DAYS</h2>
             <Activity size={19} />
           </div>
           <div className="chart-box">
@@ -153,8 +148,8 @@ export default function AdminDashboard() {
           </div>
         </div>
         <div className="panel chart-panel">
-          <h2>GROSS ITEM SALES BY BRAND</h2>
-          <small className="muted">Before cart discounts · active orders</small>
+          <h2>REQUESTED ITEM VALUE BY BRAND</h2>
+          <small className="muted">Before cart discounts · demo requests</small>
           <div className="chart-box">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
