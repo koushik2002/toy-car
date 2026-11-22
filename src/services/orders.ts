@@ -3,7 +3,7 @@ import { cartTotals } from './cart';
 import { moveStock } from './inventory';
 import { queueSync } from './tallySync';
 import { stages } from '../data/seed';
-import type { Address, Order, OrderStatus } from '../types';
+import type { Address, Order } from '../types';
 export const validPin = (pin: string) => /^[1-9]\d{5}$/.test(pin);
 export const validPhone = (phone: string) => /^[6-9]\d{9}$/.test(phone);
 export function delivery(pin: string) {

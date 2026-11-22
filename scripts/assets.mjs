@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import { readFile, writeFile, unlink } from 'node:fs/promises';
+import { writeFile, unlink } from 'node:fs/promises';
 await sharp('public/assets/hero-original.png')
   .resize({ width: 1600 })
   .webp({ quality: 83 })

@@ -32,12 +32,13 @@ export default function Shop() {
     stock = params.get('stock') === '1',
     offer = params.get('offer') || '',
     sort = params.get('sort') || 'newest';
+  const paramsKey = params.toString();
   useEffect(() => {
     setLoading(true);
     setLimit(24);
     const id = setTimeout(() => setLoading(false), 350);
     return () => clearTimeout(id);
-  }, [params.toString()]);
+  }, [paramsKey]);
   function change(key: string, value: string) {
     const next = new URLSearchParams(params);
     if (value) next.set(key, value);

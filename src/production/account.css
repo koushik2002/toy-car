@@ -1,0 +1,199 @@
+/* Account screens: sign-in, account tabs, order detail, customer invoice. */
+.auth-panel h1 {
+  font-size: 43px;
+  margin: 13px 0;
+}
+
+.account-page-heading.with-mascot {
+  position: relative;
+  min-height: 145px;
+  overflow: hidden;
+  padding: 24px 205px 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.account-mascot {
+  position: absolute;
+  width: 190px;
+  height: auto;
+  right: 18px;
+  top: -35px;
+  pointer-events: none;
+  filter: drop-shadow(0 18px 24px #0009);
+}
+@media (max-width: 650px) {
+  .account-page-heading.with-mascot {
+    min-height: 126px;
+    padding: 14px 78px 16px 0;
+  }
+  .account-mascot {
+    width: 132px;
+    right: -38px;
+    top: -16px;
+    opacity: 0.5;
+  }
+}
+.auth-panel .auth-form {
+  margin-top: 24px;
+}
+.auth-panel .auth-form .btn {
+  margin-top: 6px;
+}
+.auth-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+  font-size: 12px;
+}
+.auth-links > a:not(.btn) {
+  color: var(--yellow);
+}
+.auth-links > a:not(.btn):hover {
+  text-decoration: underline;
+}
+.auth-links .or-divider {
+  margin: 10px 0 2px;
+}
+.form-message {
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 11px 13px;
+  border-radius: 6px;
+  margin: 14px 0;
+}
+.form-message.error {
+  color: #ffb3b8;
+  background: #ef334014;
+  border: 1px solid #ef334045;
+}
+.form-message.success {
+  color: var(--green);
+  background: #7ad5ab12;
+  border: 1px solid #7ad5ab40;
+}
+.account-content > .panel + .panel,
+.account-stats + .panel {
+  margin-top: 18px;
+}
+.account-content .panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.account-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.account-stats article {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.account-stats svg {
+  color: var(--red);
+}
+.account-stats span {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.account-stats strong {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px;
+  line-height: 1;
+}
+.account-stats small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.plain-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.plain-list b {
+  color: var(--text);
+}
+.order-skeleton {
+  height: 150px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+.order-images .photo-missing,
+.order-images img {
+  width: 54px;
+  height: 54px;
+  min-height: 0;
+  border-radius: 5px;
+  object-fit: cover;
+}
+.order-images .photo-missing span {
+  display: none;
+}
+.request-note {
+  color: var(--yellow) !important;
+}
+.address-card .default-badge {
+  position: absolute;
+  top: 18px;
+  right: 52px;
+}
+.order-detail-layout .cart-line .photo-missing {
+  width: 72px;
+  height: 72px;
+  min-height: 0;
+}
+.timeline-detail {
+  color: var(--yellow) !important;
+}
+.invoice-pending {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  margin: 16px 0 0;
+}
+.order-actions .btn + .btn {
+  margin-top: 10px;
+}
+.request-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.request-status small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.invoice-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+@media (max-width: 640px) {
+  .auth-panel h1 {
+    font-size: 34px;
+  }
+  .account-stats {
+    grid-template-columns: 1fr;
+  }
+  .address-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media print {
+  .invoice-toolbar {
+    display: none !important;
+  }
+}

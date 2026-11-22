@@ -6,10 +6,10 @@ import '@fontsource/dm-sans/latin-700.css';
 import '@fontsource/barlow-condensed/latin-700.css';
 import '@fontsource/barlow-condensed/latin-800.css';
 import '@fontsource/barlow-condensed/latin-800-italic.css';
-import './styles.css';
-import App from './App';
+import ProductionApp from './production/App';
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <ProductionApp />
   </React.StrictMode>,
 );

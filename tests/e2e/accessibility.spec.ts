@@ -29,6 +29,8 @@ test('keyboard and WCAG checks across storefront and admin', async ({ page }) =>
     ).toEqual([]);
   }
   await page.goto('./');
+  await page.reload();
+  await expect(page.getByRole('heading', { name: /SMALL CARS/ })).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Enter');

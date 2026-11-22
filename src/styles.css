@@ -5651,6 +5651,77 @@ input[role='switch']:checked:before {
     transform: none;
   }
 }
+
+/* Tiny Kars mascot: a restrained brand accent, never part of product or financial content. */
+.hero-mascot {
+  position: absolute;
+  z-index: 1;
+  right: clamp(170px, 13vw, 260px);
+  bottom: -88px;
+  width: clamp(330px, 31vw, 500px);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 24px 40px #000b) saturate(0.95);
+  transform: rotate(1deg);
+}
+.hero-inner {
+  z-index: 2;
+}
+.hero-model {
+  z-index: 3;
+}
+.billing-intro {
+  position: relative;
+  overflow: hidden;
+  min-height: 174px;
+}
+.billing-intro > div:first-child {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+  padding-right: 175px;
+}
+.billing-mascot {
+  position: absolute;
+  z-index: 1;
+  width: 185px;
+  height: auto;
+  right: 125px;
+  bottom: -112px;
+  pointer-events: none;
+  filter: drop-shadow(0 16px 24px #0009);
+}
+.billing-tax-state {
+  position: relative;
+  z-index: 2;
+}
+@media (max-width: 1150px) {
+  .hero-mascot {
+    right: 54px;
+    width: 390px;
+  }
+}
+@media (max-width: 760px) {
+  .hero-mascot {
+    right: -34px;
+    bottom: -58px;
+    width: 215px;
+    opacity: 0.78;
+    filter: drop-shadow(0 16px 26px #000c) saturate(0.9);
+  }
+}
+@media (max-width: 650px) {
+  .billing-intro > div:first-child {
+    max-width: none;
+    padding-right: 62px;
+  }
+  .billing-mascot {
+    width: 132px;
+    right: -34px;
+    bottom: -72px;
+    opacity: 0.42;
+  }
+}
 @media print {
   body {
     background: white;

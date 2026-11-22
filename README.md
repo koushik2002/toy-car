@@ -1,113 +1,123 @@
 # Tiny Kars
 
-A premium, fully client-side Indian diecast store **sales prototype** for `koushik2002/toy-car`. Charcoal surfaces, a racing-red action colour, yellow collector highlights, and electric-blue details follow the supplied Tiny Kars logo direction.
+Tiny Kars is the production React, Fastify and PostgreSQL application for the collectible-car
+store. The deployable entry point contains only the production storefront and authenticated
+customer, seller, staff and super-admin workflows. The former browser-only prototype is not
+selectable from the application, is not included in the production bundle and is not deployed.
 
-## Run it
+Implemented areas include:
+
+- public catalogue, filters and five-view product presentation;
+- email/password accounts, verification, reset, change password, sessions and roles;
+- product administration, CSV imports, series codes, stock, serials and barcode labels;
+- shipping policies, vouchers and server-priced Razorpay checkout;
+- order history, staff delivery confirmation and notification outboxes;
+- loyalty points, store credit and refunds;
+- seller online/offline billing, immutable invoice numbers and printable invoices;
+- Tally connector jobs and admin retry controls.
+
+## Run the real production application locally
 
 Requires Node.js 22.14+ and npm.
 
 ```sh
 npm ci
+npm run demo:client
+```
+
+`demo:client` starts the real production React frontend, Fastify API and a persistent local
+PostgreSQL-compatible database. It seeds the demo's 60 cars with five **labelled sample photos**
+each, a ₹79 / free-above-₹1,499 shipping rule, the `TINY10` voucher, active billing settings, and
+four sample orders for the collector account. The terminal prints the local URLs and credentials;
+data is retained under `.local/client-demo-db`. Use `npm run dev:local` for an isolated disposable
+database. See `CLIENT_DEMO_GUIDE.md` for the full walkthrough.
+
+The local accounts share one password and are intentionally local-only:
+
+```text
+Password: TinyKarsLocal!2026
+collector@tinykars.local   customer with sample orders
+seller@tinykars.local      seller (billing only)
+superadmin@tinykars.local  super admin
+admin@tinykars.local       admin
+staff@tinykars.local       delivery staff
+```
+
+Options: `PUBLIC_BROWSING=1` lets signed-out visitors browse the catalogue (the demo's behaviour);
+`LOCAL_API_PORT` / `LOCAL_WEB_PORT` change the default ports 3001 / 5173 when another copy is
+running.
+
+Razorpay, Resend, Meta WhatsApp and R2 are fail-closed in this local mode because no provider
+credentials are supplied.
+
+## Run against PostgreSQL
+
+Copy `server/env.example` to a private `.env`. Set `DATABASE_URL`, a stable 64-hex-character
+`OUTBOX_ENCRYPTION_KEY`, `PUBLIC_WEB_URL` and `ALLOWED_ORIGINS`, then run:
+
+```sh
+npm run dev:api
 npm run dev
 ```
 
-Open the address Vite prints, including `/toy-car/`. For the production build:
+The API applies checksum-checked migrations at startup. Provision the first production super admin
+from a private interactive terminal:
 
 ```sh
-npm run build
-npm run preview
+PROVISION_ADMIN=1 npm run admin:provision -- owner@example.com
 ```
 
-Use **Demo** in the bottom-right corner to start a 12-step walkthrough, switch collector/admin views, trigger new orders/low stock/offline Tally/failed syncs, or reset all browser data. `/#/features` is the complete clickable feature map.
+Store the generated password in the client-owned password manager and change it after the first
+sign-in (My account → Security). Further
+roles are assigned by the super admin from the dashboard.
 
-## Demo accounts
+To review a staging site before the real catalogue arrives, `npm run seed:samples` adds the sample
+cars (it refuses if products already exist and never runs with `NODE_ENV=production`).
+`npm run seed:samples -- --withdraw` unpublishes every product still using sample photos.
+`npm run samples:images` regenerates the sample photos from the demo artwork.
 
-The initial session is Vishwas, so a presentation can begin immediately. Open Account and “Switch demo collector” to choose another user, or sign out to try phone + OTP.
-
-| Collector | Phone      | City       |
-| --------- | ---------- | ---------- |
-| Vishwas   | 9876500001 | Bengaluru  |
-| Koushik   | 9876500002 | Mumbai     |
-| Jeevan    | 9876500003 | Hyderabad  |
-| Admin     | 9876500099 | Admin demo |
-
-Any valid Indian mobile number works with **Demo OTP `123456`**, displayed on screen. No SMS is sent. Switch to admin with the header's **Admin demo** button or the floating Demo panel. Direct admin links intentionally work; this is role simulation, not authentication.
-
-Coupons: `TINY10` (10%, ₹499 minimum), `FIRST15` (15%, ₹999 minimum), and initially disabled `COLLECT5` (5%). Prices use INR and Indian grouping; **GST is disabled by default**, so no tax is charged. Admin → Bills & settings includes a future GST toggle, GSTIN and configurable rate. When enabled, GST is added to discounted goods; shipping is unchanged. This is a demo calculation, not a complete statutory tax engine. Shipping is ₹79, free above ₹1,499 **after discounts**.
-
-## What you can demonstrate
-
-- Home: cinematic hero, local artwork, brand/series mega-menu, scales, budgets, starter offer, new arrivals, best sellers, rare carousel and trust strips.
-- Catalogue: URL-based filters for brand, series, scale, price ceiling, condition, stock, rarity and offer; sorting, active chips, mobile drawer, simulated 350 ms skeleton state and header search suggestions.
-- Product: three presentations of illustrative artwork, zoom, quantity, stock states, wishlist, local restock reminder, related items and mocked six-digit PIN-code delivery.
-- Cart/checkout: drawer and page, add animation/toasts, automatic bundles, coupon, shipping progress, saved/new address, WhatsApp ordering to **+91 8861502026**, with a prefilled item/quantity/price/address message. Customers review it and tap Send; payment is arranged in the chat. Opening WhatsApp does not prove that a message was sent. Orders atomically validate/decrement stock, preserve item prices and queue sales/stock jobs.
-- Account: per-collector wishlist, profile, saved addresses, order filters, fulfilment timeline, tracking, saved, printable **demo bill**, reorder, cancel before packing, returns within seven days, optional local photo preview. Cancellation/refund restores stock once.
-- Admin: six KPIs, 30-day chart, brand item-sales chart, product CRUD/image preview, validated CSV import/export, stock adjustment reasons/thresholds/logs, fulfilment/tracking/manual payment/refund controls, customer histories/LTV, editable and creatable offers/coupons.
-- Billing: custom or catalogue line items, collector or walk-in details, discount/shipping, saved bill history, print / Save PDF, order-based bills, seller details and future GST settings. Saved bills retain their original totals. Manual bills do not adjust inventory.
-- Tally: offline/online switch, company and last-sync time, configurable 15% default failure, pending/success/failed jobs, manual/all-failed retry, exponential backoff, stock pull, reconciliation accepting either source with an inventory log, editable SKU mappings. A late retry cannot replace a newer successful stock update.
-- Demo: guided customer → admin → Tally journey, event buttons, account switches, reset, and clickable feature map.
-
-There are 60 local products across nine brands, three collectors, one admin, 25 historical orders covering all statuses, 25 inventory movements, and 25 initial sync jobs. Dates are relative to the first load/reset so dashboards and return examples stay usable. Historical movements/orders are presentation seed history; they do not replay against initial stock.
-
-## GitHub Pages
-
-The actual selected repository is **`toy-car`**, so `vite.config.ts` sets **`base: '/toy-car/'`**. `HashRouter` keeps deep links and refreshes valid on static hosting:
-
-```text
-https://koushik2002.github.io/toy-car/
-https://koushik2002.github.io/toy-car/#/product/p001
-https://koushik2002.github.io/toy-car/#/admin/tally
-```
-
-The demo is deployed at the first URL; the other URLs open product and admin pages directly.
-
-`.github/workflows/deploy.yml` runs `npm ci`, service tests and the production build on each push to `main`, uploads `dist`, and deploys with the GitHub Pages environment. In the repository's **Settings → Pages**, choose **GitHub Actions** as the source. The authenticated repository owner must enable Pages if it has not been enabled. No deployment secrets or API keys are required.
-
-The intended git publication is:
+## Production build
 
 ```sh
-git push origin main
-```
-
-GitHub account access is required for pushing and enabling Pages. Cloning a public repository does not grant write access.
-
-## Logo, colours and artwork
-
-The supplied original Tiny Kars logo is stored at **`public/assets/brand/logo.jpg`** and used in the header, footer and bills. It is copied unchanged from the client’s JPEG. The older placeholder assets are retained only as historical artwork and are not displayed.
-
-All brand tokens are in the `:root` blocks of **`src/styles.css`**; Tailwind tokens are in the adjacent `@theme` block. `--red-action` is slightly deeper than the accent red to meet contrast requirements for white button text.
-
-Images are original generated **illustrative placeholders**, stored locally as WebP with smaller responsive versions. Nine catalogue illustrations repeat across the 60 seeded models; they do not claim to accurately depict every named product. The gallery uses crops of the same placeholder, not three real product photographs. No product images or text were copied from the reference stores. See **`docs/artwork.md`** for the generation prompts and asset paths.
-
-## Code map
-
-```text
-src/components/   shared layout, cards, dialogs, demo controls, forms
-src/pages/        lazy-loaded customer and admin screens
-src/services/     storage, cart, orders, inventory, Tally, account, offers, CSV
-src/data/         local JSON seeds and relative-date seed construction
-src/hooks/        reactive state subscription
-public/assets/    local brand, hero and product artwork
-tests/unit/      business transaction/retry/CSV tests
-tests/e2e/       desktop/mobile journeys and accessibility scans
-```
-
-One storage service wraps localStorage reads/writes in try/catch and falls back to memory with a visible notice if storage is unavailable or full. State uses a single versioned document and immutable transactions, with cross-tab storage-event updates. Concurrent writes from separate tabs use last-write-wins; a production backend must handle real concurrency.
-
-## Verification
-
-```sh
+npm run lint
+npm run check
+npm run check:server
 npm test
+npm run test:integration:local
+npm run verify:persistence
 npm run build
-npx playwright install chromium firefox webkit
-npm run test:e2e
-npx playwright test -c playwright.compat.config.ts
+npm run test:production-ui
 ```
 
-The normal Playwright configuration uses installed Chrome on macOS if found and Playwright Chromium elsewhere. You can set `TINY_KARS_CHROME` to an executable path. Compatibility projects use Firefox and mobile WebKit. WebKit emulation is not a physical iPhone Safari test. Lighthouse and accessibility findings are documented in **`docs/validation.md`**.
+`npm run build` always builds the production application. There is no demo build flag or demo
+deployment command. CI also builds only this production entry point.
 
-## Simulated vs production
+For deployment, set `VITE_API_BASE_URL` to the public HTTPS API base at build time. The API host
+must receive `NODE_ENV=production`, the database URL, website origins, stable encryption key,
+provider secrets and the remaining values documented in `server/env.example`.
 
-This prototype has no backend, database, payment gateway, real OTP, accounting bridge, analytics, real delivery lookup or real notification service. It does not collect card/bank credentials. Photo uploads are resized and saved in browser state, not sent anywhere. Browser data is local to each device, and reset restores the seed (including saved bills and business settings). The WhatsApp link opens the real app/site; no messages are sent automatically. Existing version-1 browser data is migrated without clearing carts, stock, orders or wishlists, updating the three original collector names and removing the old demo GST/payment methods.
+## Production safeguards
 
-Production would need server authentication/authorization, a transactional inventory/order database, validated addresses, a WhatsApp order confirmation workflow, delivery/carrier integration, actual tax/invoice configuration, secure upload storage, notifications, and a TallyPrime connector with durable jobs, accounting identifiers, idempotency and reconciliation. No real Tally XML or tax identifiers are invented here.
+- Checkout appears only when all Razorpay settings are configured.
+- Production startup requires HTTPS origins and an email provider.
+- R2 and Meta settings must be provided as complete groups.
+- Browser totals are never trusted; prices, stock and discounts are recalculated server-side.
+- Inventory reservation, voucher use, payment reconciliation and financial ledgers are idempotent.
+- Issued invoices and financial audit entries are immutable.
+- Secrets belong in the deployment secret manager, never source code or the frontend bundle.
+
+## Project map
+
+```text
+src/production/   production React storefront and role-based dashboards
+server/           Fastify API, PostgreSQL migrations and provider integrations
+scripts/          local database/test helpers
+tests/production/ production desktop/mobile Playwright journeys
+tests/unit/       service and transaction tests
+docs/             requirements, client handoff and launch evidence
+```
+
+See [what we need from the client](docs/client-questions-for-launch.md),
+[production launch gates](docs/production-launch-blockers-and-test-results.md) and the
+[client deployment checklist](docs/client-deployment-registration-and-photo-checklist.md) before
+enabling public payments.

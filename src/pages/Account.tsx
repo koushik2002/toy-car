@@ -27,7 +27,7 @@ export default function Account() {
   useEffect(() => {
     setName(user?.name ?? '');
     setEmail(user?.email ?? '');
-  }, [user?.id]);
+  }, [user?.email, user?.id, user?.name]);
   const tab = location.pathname.split('/')[2] || 'orders';
   const orders = state.orders.filter(
     (o) => o.userId === user?.id && (!status || o.status === status),
